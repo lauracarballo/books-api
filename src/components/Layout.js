@@ -4,7 +4,7 @@ function Layout(props) {
   return (
     <div className="page-layout">
       {props.children}
-      <style jsx global>{`
+      <style>{`
         html,
         body,
         div,
@@ -67,16 +67,6 @@ function Layout(props) {
           border: none;
           border-radius: 5px;
           padding: 5px 10px;
-        }
-
-        input {
-          background-color: #ffffff;
-          border: none;
-        }
-
-        input:focus {
-          background-color: none;
-          outline: none;
         }
 
         button {

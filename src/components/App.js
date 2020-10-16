@@ -1,60 +1,81 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import { components } from "react-select";
+import AsyncSelect from "react-select/async";
 import axios from "redaxios";
 
 const key = process.env.REACT_APP_KEY;
 
-function App() {
-  const [data, setData] = useState({ items: [] });
-  const [query, setQuery] = useState("");
-  const [search, setSearch] = useState("");
+const Option = (props) => {
+  return (
+    <components.Option {...props}>
+      {props.label} - {props.data.authors}
+    </components.Option>
+  );
+};
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const result = await axios(
-        `https://www.googleapis.com/books/v1/volumes?q=${search}&key=${key}`
-      );
-      setData(result.data);
-    };
-    fetchData();
-  }, [search]);
+const customStyles = {
+  container: (provided) => ({
+    ...provided,
+    width: 300,
+  }),
+  control: (provided) => ({
+    ...provided,
+    borderColor: "#fff",
+  }),
+};
+
+function App() {
+  const [books, setBooks] = useState([]);
+
+  const fetchBookTitles = async (search) => {
+    const result = await axios(
+      `https://www.googleapis.com/books/v1/volumes?q=${search}&key=${key}`
+    );
+    return result.data.items.map((item) => {
+      return {
+        label: item.volumeInfo.title,
+        value: item.id,
+        image:
+          item.volumeInfo.imageLinks &&
+          item.volumeInfo.imageLinks.smallThumbnail,
+        authors: item.volumeInfo.authors,
+      };
+    });
+  };
 
   return (
     <div className="App">
       <header className="header">
         <h1>MY PERSONAL BOOKSHELF</h1>
-        <div className="search-bar">
-          <input
-            onChange={(event) => {
-              setQuery(event.target.value);
-            }}
-            type="text"
-            value={query}
-          />
-          <button
-            onClick={() => {
-              setSearch(query);
-            }}
-          >
-            <i className="fas fa-search"></i>
-          </button>
-        </div>
+
+        <AsyncSelect
+          cacheOptions
+          defaultOptions
+          components={{ Option }}
+          loadOptions={fetchBookTitles}
+          styles={customStyles}
+          onChange={(value, action) => {
+            console.log(action);
+            if (action.action === "select-option") {
+              setBooks((prevValue) => {
+                return [...prevValue, value];
+              });
+            }
+          }}
+        />
       </header>
 
       <ul className="books">
-        {data.items.map((item) => {
+        {books.map((item) => {
           console.log(item);
           return (
-            <li className="book-item" key={item.id}>
-              {item.volumeInfo.imageLinks && (
-                <img
-                  className="book__img"
-                  src={item.volumeInfo.imageLinks.smallThumbnail}
-                  alt=""
-                />
+            <li className="book-item" key={item.value}>
+              {item.image && (
+                <img className="book__img" src={item.image} alt="" />
               )}
               <div className="book__content">
-                <div className="book__content">{item.volumeInfo.title}</div>
-                <div className="book__content">{item.volumeInfo.authors}</div>
+                <div className="book__content">{item.label}</div>
+                <div className="book__content">{item.authors.join(", ")}</div>
               </div>
             </li>
           );
