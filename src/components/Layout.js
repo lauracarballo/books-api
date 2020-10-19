@@ -4,7 +4,7 @@ function Layout(props) {
   return (
     <div className="page-layout">
       {props.children}
-      <style jsx global>{`
+      <style>{`
         html,
         body,
         div,
@@ -43,19 +43,38 @@ function Layout(props) {
           vertical-align: baseline;
         }
 
-        body {
-          line-height: 1;
-        }
         ol,
         ul {
           list-style: none;
         }
 
+        body {
+          background-image: url("/img/wallpaper.jpeg");
+          background-size: cover;
+          line-height: 1;
+        }
+
+        body:before {
+          background-color: hsl(0deg 0% 0% / 20%);
+          content: "";
+          height: 100%;
+          width: 100%;
+          position: absolute;
+          top: 0;
+          left: 0;
+          z-index: 0;
+        }
+
+        .page {
+          padding: 0px 40px;
+        }
+
         .header {
           display: flex;
           justify-content: space-between;
-          padding: 40px 40px;
-          background-color: #ffefd8;
+          padding: 40px 0px;
+          z-index: 1;
+          position: relative;
         }
 
         .search-bar {
@@ -67,16 +86,8 @@ function Layout(props) {
           border: none;
           border-radius: 5px;
           padding: 5px 10px;
-        }
-
-        input {
-          background-color: #ffffff;
-          border: none;
-        }
-
-        input:focus {
-          background-color: none;
-          outline: none;
+          z-index: 1;
+          position relative;
         }
 
         button {
@@ -92,12 +103,18 @@ function Layout(props) {
 
         .books {
           display: flex;
-          padding: 40px 40px;
+          margin: 20px 0px;
+          box-shadow: 8px 0px 8px #523906;
           max-width: 100%;
           flex-wrap: wrap;
           justify-content: center;
           font-family: "Open Sans", cursive;
+          background-image: url("/img/wood.jpeg");
+          background-size: cover;
+          z-index: 1;
+          position: relative;
         }
+
 
         .book-item {
           padding: 30px 30px;
@@ -106,20 +123,31 @@ function Layout(props) {
         }
 
         .book__img {
-          width: 130px;
-          height: 200px;
+          width: 120px;
+          height: 180px;
         }
 
         .book__content {
           padding: 5px 0px;
+          color: #000;
         }
 
         h1 {
           font-family: "Amatic SC", cursive;
-          font-size: 40px;
-          color: #a35638;
+          font-size: 50px;
+          color: #ffffff;
           letter-spacing: 0.05em;
         }
+
+        // h2 {
+        //   font-family: "Amatic SC", cursive;
+        //   font-size: 40px;
+        //   color: #fff;
+        //   letter-spacing: 0.05em;
+        //   position: relative;
+        //   z-index: 1;
+          
+        // }
       `}</style>
     </div>
   );

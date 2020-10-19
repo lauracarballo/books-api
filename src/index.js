@@ -4,10 +4,8 @@ import App from "./components/App";
 import Layout from "./components/Layout";
 
 ReactDOM.render(
-  <React.StrictMode>
-    <Layout>
-      <App />
-    </Layout>
-  </React.StrictMode>,
+  <Layout>
+    <App />
+  </Layout>,
   document.getElementById("root")
 );
