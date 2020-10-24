@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { components } from "react-select";
 import AsyncSelect from "react-select/async";
 import axios from "redaxios";
@@ -26,6 +27,9 @@ const customStyles = {
 
 function App() {
   const [books, setBooks] = useState([]);
+  const [remove, setRemove] = useState(false);
+  const [select, setSelect] = useState(null);
+  const [value, setValue] = useState("EDIT");
 
   const fetchBookTitles = async (search) => {
     const result = await axios(
@@ -39,6 +43,7 @@ function App() {
           item.volumeInfo.imageLinks &&
           item.volumeInfo.imageLinks.smallThumbnail,
         authors: item.volumeInfo.authors,
+        description: item.volumeInfo.description,
       };
     });
   };
@@ -53,6 +58,37 @@ function App() {
   useEffect(() => {
     fetchBooks();
   }, []);
+
+  function handleEdit() {
+    if (remove === false) {
+      setRemove(true);
+      setValue("DONE");
+    } else {
+      setRemove(false);
+      setValue("EDIT");
+    }
+  }
+
+  function handleSelect(item) {
+    setSelect(item);
+  }
+
+  function handleOnDragEnd(result) {
+    if (!result.destination) return;
+
+    const items = Array.from(books);
+    const [reorderedItem] = items.splice(result.source.index, 1);
+    items.splice(result.destination.index, 0, reorderedItem);
+
+    setBooks(items);
+  }
+
+  async function handleDelete(id) {
+    await fetch("http://localhost:5000/" + id, {
+      method: "DELETE",
+    });
+    fetchBooks();
+  }
 
   return (
     <div className="page">
@@ -76,14 +112,13 @@ function App() {
                 title: item.label,
                 authors: item.authors,
                 image: item.image,
+                description: item.description,
               }),
             }).then((res) => res.json());
 
             // Response is a an object: { "created": true }
             if (response.created) {
-              setBooks((prevValue) => {
-                return [...prevValue, item];
-              });
+              fetchBooks();
             }
 
             // if (action.action === "select-option") {
@@ -95,22 +130,89 @@ function App() {
         />
       </header>
 
-      <ul className="books">
-        {books.map((item) => {
-          console.log(item);
-          return (
-            <li className="book-item" key={item.value}>
-              {item.image && (
-                <img className="book__img" src={item.image} alt="" />
+      <div className="delete-button">
+        <button onClick={handleEdit}>{value}</button>
+      </div>
+
+      <DragDropContext onDragEnd={handleOnDragEnd}>
+        <Droppable droppableId="books" direction="horizontal">
+          {(provided) => (
+            <ul
+              className="books"
+              {...provided.droppableProps}
+              ref={provided.innerRef}
+            >
+              {books.map((item, index) => {
+                return (
+                  <Draggable
+                    isDragDisabled={!remove}
+                    key={item.id}
+                    draggableId={item.id.toString()}
+                    index={index}
+                  >
+                    {(provided) => (
+                      <li
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                        className="book-item"
+                      >
+                        {remove ? (
+                          <div className="delete-button">
+                            <button
+                              onClick={() => handleDelete(item.id)}
+                              className="delete-button__inner-button"
+                            >
+                              x
+                            </button>
+                          </div>
+                        ) : null}
+                        {item.image && (
+                          <img
+                            onClick={() => handleSelect(item)}
+                            className="book__img"
+                            src={item.image}
+                            alt=""
+                          />
+                        )}
+                      </li>
+                    )}
+                  </Draggable>
+                );
+              })}
+              {provided.placeholder}
+            </ul>
+          )}
+        </Droppable>
+      </DragDropContext>
+
+      <div>
+        {select ? (
+          <div
+            className="book__content-background"
+            onClick={() => {
+              setSelect(false);
+            }}
+          >
+            <div className="book__content">
+              {select.image && (
+                <img className="book__content__img" src={select.image} alt="" />
               )}
-              {/* <div className="book__content">
-                <div className="book__content">{item.title}</div>
-                <div className="book__content">{item.authors.join(", ")}</div>
-              </div> */}
-            </li>
-          );
-        })}
-      </ul>
+              <div className="book__content__description">
+                <span className="book__content__description-item">
+                  {select.title}
+                </span>
+                <span className="book__content__description-item">
+                  {select.authors.join(", ")}
+                </span>
+                <span className="book__content__description-item">
+                  {select.description}
+                </span>
+              </div>
+            </div>
+          </div>
+        ) : null}
+      </div>
     </div>
   );
 }

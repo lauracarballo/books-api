@@ -55,14 +55,14 @@ function Layout(props) {
         }
 
         body:before {
-          background-color: hsl(0deg 0% 0% / 20%);
+          background-color: hsl(0deg 0% 0% / 10%);
           content: "";
           height: 100%;
           width: 100%;
           position: absolute;
           top: 0;
           left: 0;
-          z-index: 0;
+          z-index: -1;
         }
 
         .page {
@@ -90,10 +90,25 @@ function Layout(props) {
           position relative;
         }
 
-        button {
-          background-color: inherit;
-          border: none;
+        .delete-button {
+          display: flex;
           justify-content: flex-end;
+        }
+
+        .delete-button__inner-button {
+          border-radius: 15px;
+          
+        }
+
+        button {
+          display: block;
+          background-color: #a48972;
+          border: 2px solid #523906;
+          box-shadow: 8px 0px 8px #523906;
+          border-radius: 5px;
+          color: #fff;
+          padding: 5px 8px;
+          font-size: 12px;
         }
 
         button:focus {
@@ -105,13 +120,14 @@ function Layout(props) {
           display: flex;
           margin: 20px 0px;
           box-shadow: 8px 0px 8px #523906;
-          max-width: 100%;
+          width: 100%;
+          min-height: 250px;
           flex-wrap: wrap;
           justify-content: center;
           font-family: "Open Sans", cursive;
           background-image: url("/img/wood.jpeg");
           background-size: cover;
-          z-index: 1;
+          z-index: 0;
           position: relative;
         }
 
@@ -128,8 +144,43 @@ function Layout(props) {
         }
 
         .book__content {
+          display: flex;
+          align-items: center;
+          justify-content: center;
           padding: 5px 0px;
           color: #000;
+          width: 70%;
+          background-color: #fff;
+          position: absolute;
+          top: 120px;
+          left: 200px;
+          height: 400px;
+          border-radius: 2px;
+        }
+
+        .book__content__img {
+          width: 180px;
+          height: 280px;
+        }
+
+        .book__content__description {
+          display: grid;
+          max-width: 60%;  
+        }
+
+        .book__content__description-item {
+          padding: 10px 20px;
+        }
+
+        .book__content-background {
+          position:fixed;
+          padding:0;
+          margin:0;
+          top:0;
+          left:0;
+          width: 100%;
+          height: 100%;
+          background:rgba(255,255,255,0.5);
         }
 
         h1 {
