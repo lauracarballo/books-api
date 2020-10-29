@@ -18,23 +18,18 @@ app.use(cors());
 app.options("*", cors());
 
 app.get("/lists", (req, res) => {
+  console.log("/lists", lists);
   res.send(lists);
 });
 
 app.post("/save", (req, res) => {
-  console.log(req.body);
   if (req.body.lists && req.body.lists.books && req.body.lists.wishlist) {
     lists = req.body.lists;
+    console.log("/save", lists);
     res.send(lists);
   } else {
     res.status(400).send({ error: "Cannot save" });
   }
 });
-
-// app.delete("/:bookId", (req, res) => {
-//   console.log(req.params);
-//   books = books.filter((book) => book.id !== Number(req.params.bookId));
-//   res.send({ deleted: true });
-// });
 
 app.listen(port, () => console.log(`Listening on port ${port}`));

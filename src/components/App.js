@@ -26,6 +26,7 @@ const customStyles = {
 };
 
 function App() {
+  const [isLoading, setLoading] = useState(true);
   const [lists, setLists] = useState({
     books: [],
     wishlist: [],
@@ -55,6 +56,7 @@ function App() {
     const storedLists = await fetch("http://localhost:5000/lists").then((res) =>
       res.json()
     );
+    setLoading(false);
     console.log(storedLists);
 
     setLists(storedLists);
@@ -65,6 +67,7 @@ function App() {
   }, []);
 
   useEffect(() => {
+    console.log("saveLists", lists);
     const saveLists = async () => {
       await fetch("http://localhost:5000/save", {
         method: "POST",
@@ -72,8 +75,10 @@ function App() {
         body: JSON.stringify({ lists }),
       });
     };
-    saveLists();
-  }, [lists]);
+    if (!isLoading) {
+      saveLists();
+    }
+  }, [isLoading, lists]);
 
   function handleEdit() {
     if (remove === false) {
@@ -117,7 +122,14 @@ function App() {
     }
   }
 
-  // function handleDelete(id) {}
+  function handleDelete(listName, index) {
+    const clone = Array.from(lists[listName]);
+    clone.splice(index, 1);
+    setLists((prevLists) => ({
+      ...prevLists,
+      [listName]: clone,
+    }));
+  }
 
   return (
     <div className="page">
@@ -184,7 +196,7 @@ function App() {
                         {remove ? (
                           <div className="delete-button">
                             <button
-                              // onClick={() => handleDelete(item.id)}
+                              onClick={() => handleDelete("books", index)}
                               className="delete-button__inner-button"
                             >
                               x
@@ -255,7 +267,7 @@ function App() {
                   console.log(item);
                   return (
                     <Draggable
-                      // isDragDisabled={!remove}
+                      isDragDisabled={!remove}
                       key={item.id}
                       draggableId={"wish" + item.id.toString()}
                       index={index}
@@ -270,7 +282,7 @@ function App() {
                           {remove ? (
                             <div className="delete-button">
                               <button
-                                // onClick={() => handleDelete(item.id)}
+                                onClick={() => handleDelete("wishlist", index)}
                                 className="delete-button__inner-button"
                               >
                                 x
