@@ -48,6 +48,12 @@ function Layout(props) {
           list-style: none;
         }
 
+        html, body {
+          position: relative;
+          height: 110%;
+          width: 100%;
+        }
+
         body {
           background-image: url("/img/wallpaper.jpeg");
           background-size: cover;
@@ -55,7 +61,7 @@ function Layout(props) {
         }
 
         body:before {
-          background-color: hsl(0deg 0% 0% / 10%);
+          background-color: hsl(0deg 0% 0% / 22%);
           content: "";
           height: 100%;
           width: 100%;
@@ -72,7 +78,7 @@ function Layout(props) {
         .header {
           display: flex;
           justify-content: space-between;
-          padding: 40px 0px;
+          padding: 20px 0px;
           z-index: 1;
           position: relative;
         }
@@ -116,25 +122,33 @@ function Layout(props) {
           outline: none;
         }
 
-        .books {
+        .books, .wishlist {
           display: flex;
-          margin: 20px 0px;
+          margin: 10px 0px;
+          padding: 15px 15px;
           box-shadow: 8px 0px 8px #523906;
-          width: 100%;
-          min-height: 250px;
-          flex-wrap: wrap;
-          justify-content: center;
+          width: 97%;
+          min-height: 220px;
+          max-height: 220px;
+          white-space: nowrap;
+          overflow: scroll;
+          justify-content: flex-start;
           font-family: "Open Sans", cursive;
           background-image: url("/img/wood.jpeg");
           background-size: cover;
-          z-index: 0;
           position: relative;
         }
 
+        .wishlist {
+          background-image: none;
+          box-shadow: none;
+          justify-content: left;
+        }
 
-        .book-item {
-          padding: 30px 30px;
-          width: 150px;
+
+        .book-item, .wishlist-item {
+          padding: 15px 15px;
+          max-width: 150px;
           text-align: center;
         }
 
@@ -145,17 +159,18 @@ function Layout(props) {
 
         .book__content {
           display: flex;
-          align-items: center;
+          padding: 10px 30px;
           justify-content: center;
-          padding: 5px 0px;
+          align-items: center;
           color: #000;
           width: 70%;
           background-color: #fff;
-          position: absolute;
+          position: relative;
           top: 120px;
-          left: 200px;
+          left: 160px;
           height: 400px;
           border-radius: 2px;
+          z-index: 0;
         }
 
         .book__content__img {
@@ -164,12 +179,15 @@ function Layout(props) {
         }
 
         .book__content__description {
-          display: grid;
-          max-width: 60%;  
+          max-width: 70%; 
         }
 
         .book__content__description-item {
           padding: 10px 20px;
+        }
+
+        .book__content__description-item-title {
+          font-size: 30px;
         }
 
         .book__content-background {
@@ -181,6 +199,7 @@ function Layout(props) {
           width: 100%;
           height: 100%;
           background:rgba(255,255,255,0.5);
+          z-index: 1;
         }
 
         h1 {
@@ -190,15 +209,15 @@ function Layout(props) {
           letter-spacing: 0.05em;
         }
 
-        // h2 {
-        //   font-family: "Amatic SC", cursive;
-        //   font-size: 40px;
-        //   color: #fff;
-        //   letter-spacing: 0.05em;
-        //   position: relative;
-        //   z-index: 1;
+        h2 {
+          font-family: "Amatic SC", cursive;
+          font-size: 40px;
+          color: #fff;
+          letter-spacing: 0.05em;
+          position: relative;
+          z-index: 1;
           
-        // }
+        }
       `}</style>
     </div>
   );
