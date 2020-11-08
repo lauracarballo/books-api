@@ -50,7 +50,7 @@ function Layout(props) {
 
         html, body {
           position: relative;
-          height: 110%;
+          height: 100%;
           width: 100%;
         }
 
@@ -63,7 +63,7 @@ function Layout(props) {
         body:before {
           background-color: hsl(0deg 0% 0% / 22%);
           content: "";
-          height: 100%;
+          height: 105%;
           width: 100%;
           position: absolute;
           top: 0;
@@ -201,6 +201,32 @@ function Layout(props) {
           background:rgba(255,255,255,0.5);
           z-index: 1;
         }
+
+        .login {
+          height: 95vh; 
+          position: relative;
+          display: grid;
+          place-items: center;  
+        }
+
+        .login__form {
+          display: grid;      
+          background-color: #fff;
+          text-align: center;
+          border-radius: 5px;
+          box-shadow: 0px 0px 2px 3px #fff;
+          margin: 30px 0px;
+          padding: 30px;
+          
+        }
+
+        .login__form-input {
+          font-size: 20px;
+          margin-bottom: 15px;
+          padding: 5px;
+          text-decoration: none;
+        }
+
 
         h1 {
           font-family: "Amatic SC", cursive;

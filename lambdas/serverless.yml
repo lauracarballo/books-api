@@ -1,0 +1,71 @@
+service: books-api
+
+# You can pin your service to only deploy with a specific Serverless version
+frameworkVersion: "2"
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  environment:
+    BOOKS_TABLE: { Ref: booksTable }
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:PutItem
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:DeleteItem
+      Resource: { Fn::GetAtt: [booksTable, Arn] }
+
+functions:
+  lists:
+    handler: handler.lists
+    events:
+      - http:
+          path: lists
+          method: get
+          cors: true
+  save:
+    handler: handler.save
+    events:
+      - http:
+          path: save
+          method: post
+          cors: true
+  signup:
+    handler: handler.signup
+    events:
+      - http:
+          path: signup
+          method: post
+          cors: true
+  login:
+    handler: handler.login
+    events:
+      - http:
+          path: login
+          method: post
+          cors: true
+
+resources:
+  Resources:
+    booksTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: "bookshelf"
+        AttributeDefinitions:
+          - AttributeName: userId
+            AttributeType: S
+          - AttributeName: sortKey
+            AttributeType: S
+        KeySchema:
+          - AttributeName: userId
+            KeyType: HASH
+          - AttributeName: sortKey
+            KeyType: RANGE
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+
+plugins:
+  - serverless-offline

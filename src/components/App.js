@@ -3,6 +3,11 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { components } from "react-select";
 import AsyncSelect from "react-select/async";
 import axios from "redaxios";
+import { BrowserRouter as Router, Route } from "react-router-dom";
+import { AuthContext } from "../context/auth";
+
+import Signup from "../pages/Signup";
+import PrivateRoute from "../PrivateRoute";
 
 const key = process.env.REACT_APP_KEY;
 
@@ -25,11 +30,11 @@ const customStyles = {
   }),
 };
 
-function App() {
+function BookLists() {
   const [isLoading, setLoading] = useState(true);
   const [lists, setLists] = useState({
-    books: [],
     wishlist: [],
+    books: [],
   });
   const [remove, setRemove] = useState(false);
   const [select, setSelect] = useState(null);
@@ -53,11 +58,10 @@ function App() {
   };
 
   const fetchLists = async () => {
-    const storedLists = await fetch("http://localhost:5000/lists").then((res) =>
-      res.json()
-    );
+    const storedLists = await fetch(
+      "https://mawxfs6gx5.execute-api.us-east-1.amazonaws.com/dev/lists"
+    ).then((res) => res.json());
     setLoading(false);
-    console.log(storedLists);
 
     setLists(storedLists);
   };
@@ -66,19 +70,21 @@ function App() {
     fetchLists();
   }, []);
 
-  useEffect(() => {
-    console.log("saveLists", lists);
-    const saveLists = async () => {
-      await fetch("http://localhost:5000/save", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ lists }),
-      });
-    };
-    if (!isLoading) {
-      saveLists();
-    }
-  }, [isLoading, lists]);
+  // useEffect(() => {
+  //   const saveLists = async () => {
+  //     await fetch(
+  //       "https://mawxfs6gx5.execute-api.us-east-1.amazonaws.com/dev/save",
+  //       {
+  //         method: "POST",
+  //         headers: { "Content-Type": "application/json" },
+  //         body: JSON.stringify({ lists, userId }),
+  //       }
+  //     );
+  //   };
+  //   if (!isLoading) {
+  //     saveLists();
+  //   }
+  // }, [isLoading, lists]);
 
   function handleEdit() {
     if (remove === false) {
@@ -312,4 +318,40 @@ function App() {
   );
 }
 
-export default App;
+export default function App() {
+  // const existingTokens = JSON.parse(localStorage.getItem("tokens"));
+  const [isLoggedIn, setLoggedIn] = useState(false);
+
+  // const setTokens = (data) => {
+  //   localStorage.setItem("tokens", JSON.stringify(data));
+  //   setAuthTokens(data);
+  // };
+
+  async function login(email, password) {
+    const response = await fetch(
+      "https://mawxfs6gx5.execute-api.us-east-1.amazonaws.com/dev/login",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      }
+    ).then((res) => res.json());
+
+    if (response.success === true) {
+      setLoggedIn(true);
+    }
+  }
+
+  function logout() {
+    setLoggedIn(false);
+  }
+
+  return (
+    <AuthContext.Provider value={{ isLoggedIn, login, logout }}>
+      <Router>
+        <Route path="/signup" component={Signup} />
+        <PrivateRoute path="/" exact component={BookLists} />
+      </Router>
+    </AuthContext.Provider>
+  );
+}
