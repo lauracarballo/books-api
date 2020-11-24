@@ -40,7 +40,7 @@ export default function Login() {
             Sign In
           </button>
 
-          <Link className="login__form-input" to="/signup">
+          <Link className="login__form-link" to="/signup">
             Don't have an account?
           </Link>
         </div>

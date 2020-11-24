@@ -25,6 +25,13 @@ functions:
           path: lists
           method: get
           cors: true
+  profile:
+    handler: handler.profile
+    events:
+      - http:
+          path: profile
+          method: get
+          cors: true
   save:
     handler: handler.save
     events:

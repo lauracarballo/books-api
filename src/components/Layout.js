@@ -81,6 +81,7 @@ function Layout(props) {
           padding: 20px 0px;
           z-index: 1;
           position: relative;
+          align-items: center;
         }
 
         .search-bar {
@@ -103,6 +104,7 @@ function Layout(props) {
 
         .delete-button__inner-button {
           border-radius: 15px;
+          padding: 2px 6px;
           
         }
 
@@ -125,7 +127,7 @@ function Layout(props) {
         .books, .wishlist {
           display: flex;
           margin: 10px 0px;
-          padding: 15px 15px;
+          padding: 12px 15px;
           box-shadow: 8px 0px 8px #523906;
           width: 97%;
           min-height: 220px;
@@ -147,7 +149,7 @@ function Layout(props) {
 
 
         .book-item, .wishlist-item {
-          padding: 15px 15px;
+          padding: 12px 15px;
           max-width: 150px;
           text-align: center;
         }
@@ -227,6 +229,12 @@ function Layout(props) {
           text-decoration: none;
         }
 
+        .login__form-link {
+          color: #523906;
+          font-size: 15px;
+          padding-top: 15px;
+        }
+
 
         h1 {
           font-family: "Amatic SC", cursive;
@@ -243,6 +251,9 @@ function Layout(props) {
           position: relative;
           z-index: 1;
           
+        }
+        .loading {
+          padding: 50px 0px;
         }
       `}</style>
     </div>

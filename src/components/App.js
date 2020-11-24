@@ -4,12 +4,17 @@ import { components } from "react-select";
 import AsyncSelect from "react-select/async";
 import axios from "redaxios";
 import { BrowserRouter as Router, Route } from "react-router-dom";
-import { AuthContext } from "../context/auth";
+import { AuthContext, useAuth } from "../context/auth";
 
 import Signup from "../pages/Signup";
 import PrivateRoute from "../PrivateRoute";
 
 const key = process.env.REACT_APP_KEY;
+
+const IS_LOCAL = true;
+const API_URL = IS_LOCAL
+  ? "http://localhost:5000"
+  : "https://mawxfs6gx5.execute-api.us-east-1.amazonaws.com";
 
 const Option = (props) => {
   return (
@@ -31,6 +36,7 @@ const customStyles = {
 };
 
 function BookLists() {
+  const { authToken, logout } = useAuth();
   const [isLoading, setLoading] = useState(true);
   const [lists, setLists] = useState({
     wishlist: [],
@@ -39,6 +45,7 @@ function BookLists() {
   const [remove, setRemove] = useState(false);
   const [select, setSelect] = useState(null);
   const [value, setValue] = useState("EDIT");
+  const [name, setName] = useState("");
 
   const fetchBookTitles = async (search) => {
     const result = await axios(
@@ -58,33 +65,54 @@ function BookLists() {
   };
 
   const fetchLists = async () => {
-    const storedLists = await fetch(
-      "https://mawxfs6gx5.execute-api.us-east-1.amazonaws.com/dev/lists"
-    ).then((res) => res.json());
-    setLoading(false);
+    const storedLists = await fetch(`${API_URL}/dev/lists`, {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    }).then((res) => res.json());
 
-    setLists(storedLists);
+    if (storedLists.success) {
+      setLists(storedLists.lists);
+      setLoading(false);
+    } else {
+      logout();
+    }
+  };
+
+  const fetchProfile = async () => {
+    const storedProfile = await fetch(`${API_URL}/dev/profile`, {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    }).then((res) => res.json());
+
+    if (storedProfile.success) {
+      setName(storedProfile.name);
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
     fetchLists();
+    fetchProfile();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // useEffect(() => {
-  //   const saveLists = async () => {
-  //     await fetch(
-  //       "https://mawxfs6gx5.execute-api.us-east-1.amazonaws.com/dev/save",
-  //       {
-  //         method: "POST",
-  //         headers: { "Content-Type": "application/json" },
-  //         body: JSON.stringify({ lists, userId }),
-  //       }
-  //     );
-  //   };
-  //   if (!isLoading) {
-  //     saveLists();
-  //   }
-  // }, [isLoading, lists]);
+  useEffect(() => {
+    const saveLists = async () => {
+      await fetch(`${API_URL}/dev/save`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ lists }),
+      });
+    };
+    if (!isLoading) {
+      saveLists();
+    }
+  }, [isLoading, lists, authToken]);
 
   function handleEdit() {
     if (remove === false) {
@@ -137,44 +165,56 @@ function BookLists() {
     }));
   }
 
+  function handleLogout() {
+    logout();
+  }
+
   return (
     <div className="page">
-      <header className="header">
-        <h1>MY PERSONAL BOOKSHELF</h1>
+      {isLoading === false ? (
+        <div>
+          <header className="header">
+            <h1>{name}'s BOOKSHELF</h1>
+            <div className="logout-button">
+              <button onClick={handleLogout}>Sign Out</button>
+            </div>
+          </header>
+          <AsyncSelect
+            cacheOptions
+            defaultOptions
+            placeholder="Add a book here"
+            components={{ Option }}
+            loadOptions={fetchBookTitles}
+            styles={customStyles}
+            onChange={(item, action) => {
+              setLists((prevLists) => ({
+                ...prevLists,
+                wishlist: [
+                  ...prevLists.wishlist,
+                  {
+                    id: item.value,
+                    title: item.label,
+                    authors: item.authors,
+                    image: item.image,
+                    description: item.description,
+                  },
+                ],
+              }));
 
-        <AsyncSelect
-          cacheOptions
-          defaultOptions
-          components={{ Option }}
-          loadOptions={fetchBookTitles}
-          styles={customStyles}
-          onChange={(item, action) => {
-            setLists((prevLists) => ({
-              ...prevLists,
-              wishlist: [
-                ...prevLists.wishlist,
-                {
-                  id: item.value,
-                  title: item.label,
-                  authors: item.authors,
-                  image: item.image,
-                  description: item.description,
-                },
-              ],
-            }));
+              // if (action.action === "select-option") {
+              //   setBooks((prevItem) => {
+              //     return [...prevItem, item];
+              //   });
+              // }
+            }}
+          />
+          <div className="delete-button">
+            <button onClick={handleEdit}>{value}</button>
+          </div>
+        </div>
+      ) : null}
 
-            // if (action.action === "select-option") {
-            //   setBooks((prevItem) => {
-            //     return [...prevItem, item];
-            //   });
-            // }
-          }}
-        />
-      </header>
-
-      <div className="delete-button">
-        <button onClick={handleEdit}>{value}</button>
-      </div>
+      {isLoading && <h2 className="loading">Loading...</h2>}
 
       <DragDropContext onDragEnd={handleOnDragEnd}>
         <Droppable droppableId="books" direction="horizontal">
@@ -319,35 +359,56 @@ function BookLists() {
 }
 
 export default function App() {
-  // const existingTokens = JSON.parse(localStorage.getItem("tokens"));
-  const [isLoggedIn, setLoggedIn] = useState(false);
+  const existingTokens = localStorage.getItem("token");
 
-  // const setTokens = (data) => {
-  //   localStorage.setItem("tokens", JSON.stringify(data));
-  //   setAuthTokens(data);
-  // };
+  const [isAuthenticated, setIsAuthenticated] = useState(
+    existingTokens ? true : false
+  );
+  const [authToken, setAuthTokens] = useState(existingTokens);
 
   async function login(email, password) {
-    const response = await fetch(
-      "https://mawxfs6gx5.execute-api.us-east-1.amazonaws.com/dev/login",
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      }
-    ).then((res) => res.json());
+    const response = await fetch(`${API_URL}/dev/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    }).then((res) => res.json());
 
     if (response.success === true) {
-      setLoggedIn(true);
+      localStorage.setItem("token", response.token);
+      setAuthTokens(response.token);
+      setIsAuthenticated(true);
+    }
+  }
+
+  async function signUp(name, email, password) {
+    const response = await fetch(`${API_URL}/dev/signup`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, email, password }),
+    }).then((res) => res.json());
+
+    if (response.success === true) {
+      localStorage.setItem("token", response.token);
+      setAuthTokens(response.token);
+      setIsAuthenticated(true);
     }
   }
 
   function logout() {
-    setLoggedIn(false);
+    setIsAuthenticated(false);
+    localStorage.removeItem("token");
   }
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, login, logout }}>
+    <AuthContext.Provider
+      value={{
+        isAuthenticated,
+        authToken,
+        login,
+        logout,
+        signUp,
+      }}
+    >
       <Router>
         <Route path="/signup" component={Signup} />
         <PrivateRoute path="/" exact component={BookLists} />

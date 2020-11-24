@@ -1,33 +1,60 @@
 const AWS = require("aws-sdk");
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
+const jwt = require("jsonwebtoken");
+
+const JWT_SECRET = "mykey";
 
 module.exports.signup = async (event) => {
-  const data = JSON.parse(event.body);
-  if (data.email && data.password && data.name) {
+  const userInput = JSON.parse(event.body);
+  console.log(userInput);
+
+  if (userInput.email && userInput.password && userInput.name) {
     await dynamoDb
       .put({
         TableName: "bookshelf",
         Item: {
-          userId: data.email,
+          userId: userInput.email,
           sortKey: "profile",
-          name: data.name,
-          password: data.password,
-          email: data.email,
+          name: userInput.name,
+          password: userInput.password,
+          email: userInput.email,
         },
       })
       .promise();
+
+    const token = jwt.sign(
+      {
+        userId: userInput.email,
+      },
+      JWT_SECRET,
+      { expiresIn: "1h" }
+    );
+    console.log(token);
+
+    return {
+      statusCode: 200,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+      },
+      body: JSON.stringify({ success: true, token }),
+    };
+  } else {
+    return {
+      statusCode: 401,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+      },
+      body: JSON.stringify({
+        success: false,
+        error: "Enter a valid name/email/password",
+      }),
+    };
   }
-  return {
-    statusCode: 200,
-    headers: {
-      "Access-Control-Allow-Origin": "*",
-    },
-    body: JSON.stringify({ success: true }),
-  };
 };
 
 module.exports.login = async (event) => {
   const userInput = JSON.parse(event.body);
+
   if (userInput.email && userInput.password) {
     const data = await dynamoDb
       .get({
@@ -48,13 +75,21 @@ module.exports.login = async (event) => {
 
     const userPassword = data.Item.password;
 
+    const token = jwt.sign(
+      {
+        userId: userInput.email,
+      },
+      JWT_SECRET,
+      { expiresIn: "1h" }
+    );
+
     if (userPassword === userInput.password) {
       return {
         statusCode: 200,
         headers: {
           "Access-Control-Allow-Origin": "*",
         },
-        body: JSON.stringify({ success: true }),
+        body: JSON.stringify({ success: true, token }),
       };
     } else {
       return {
@@ -69,13 +104,18 @@ module.exports.login = async (event) => {
 };
 
 module.exports.save = async (event) => {
+  const authHeader = event.headers.Authorization;
+  const token = authHeader.slice(7);
   const userInput = JSON.parse(event.body);
-  if (userInput.books && userInput.wishlist) {
+
+  const decoded = jwt.verify(token, JWT_SECRET);
+
+  if (userInput.lists) {
     await dynamoDb
       .put({
         TableName: "bookshelf",
         Item: {
-          userId: userInput.userId,
+          userId: decoded.userId,
           sortKey: "books",
           lists: userInput.lists,
         },
@@ -93,21 +133,26 @@ module.exports.save = async (event) => {
 };
 
 module.exports.lists = async (event) => {
-  const userId = event.queryStringParameters.userId;
+  const authHeader = event.headers.Authorization;
+  const token = authHeader.slice(7);
+  console.log({ token });
+
+  const decoded = jwt.verify(token, JWT_SECRET);
+
   const data = await dynamoDb
     .get({
       TableName: "bookshelf",
-      Key: { userId: userId, sortKey: "books" },
+      Key: { userId: decoded.userId, sortKey: "books" },
     })
     .promise();
 
   if (!data.Item) {
     return {
-      statusCode: 404,
+      statusCode: 401,
       headers: {
         "Access-Control-Allow-Origin": "*",
       },
-      body: JSON.stringify({ success: false, err: "user not found" }),
+      body: JSON.stringify({ success: false, err: "not authorized" }),
     };
   } else {
     return {
@@ -115,7 +160,40 @@ module.exports.lists = async (event) => {
       headers: {
         "Access-Control-Allow-Origin": "*",
       },
-      body: JSON.stringify(data.Item.lists),
+      body: JSON.stringify({ success: true, lists: data.Item.lists }),
+    };
+  }
+};
+
+module.exports.profile = async (event) => {
+  const authHeader = event.headers.Authorization;
+  const token = authHeader.slice(7);
+  console.log({ token });
+
+  const decoded = jwt.verify(token, JWT_SECRET);
+
+  const data = await dynamoDb
+    .get({
+      TableName: "bookshelf",
+      Key: { userId: decoded.userId, sortKey: "profile" },
+    })
+    .promise();
+
+  if (!data.Item) {
+    return {
+      statusCode: 401,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+      },
+      body: JSON.stringify({ success: false, err: "not authorized" }),
+    };
+  } else {
+    return {
+      statusCode: 200,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+      },
+      body: JSON.stringify({ success: true, name: data.Item.name }),
     };
   }
 };
