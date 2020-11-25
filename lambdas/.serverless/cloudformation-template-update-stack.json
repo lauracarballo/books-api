@@ -62,6 +62,12 @@
         "LogGroupName": "/aws/lambda/books-api-dev-lists"
       }
     },
+    "ProfileLogGroup": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": "/aws/lambda/books-api-dev-profile"
+      }
+    },
     "SaveLogGroup": {
       "Type": "AWS::Logs::LogGroup",
       "Properties": {
@@ -179,7 +185,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/books-api/dev/1604879252060-2020-11-08T23:47:32.060Z/books-api.zip"
+          "S3Key": "serverless/books-api/dev/1606292663467-2020-11-25T08:24:23.467Z/books-api.zip"
         },
         "FunctionName": "books-api-dev-lists",
         "Handler": "handler.lists",
@@ -196,7 +202,8 @@
           "Variables": {
             "BOOKS_TABLE": {
               "Ref": "booksTable"
-            }
+            },
+            "JWT_SECRET": "sofwmenergbelfemoeinlqjerbjfbn"
           }
         }
       },
@@ -204,14 +211,57 @@
         "ListsLogGroup"
       ]
     },
-    "ListsLambdaVersionbRTcl38nIosJTCLTWcC8qZ0bV46ZqQHSp0XOna22uE": {
+    "ListsLambdaVersionUC8AztmuUycnvrHZrh98Y5ZGadfbXbCQvFdtyzXB5g": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "ListsLambdaFunction"
         },
-        "CodeSha256": "MM/9kI5/bLyDwXEr574k8Aq2CgNe5oxcwyzyTHcpeQs="
+        "CodeSha256": "HECaAl9YLWI1lGgILr3hdz0HVvpdTqmBIi9zbU+dkpg="
+      }
+    },
+    "ProfileLambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Ref": "ServerlessDeploymentBucket"
+          },
+          "S3Key": "serverless/books-api/dev/1606292663467-2020-11-25T08:24:23.467Z/books-api.zip"
+        },
+        "FunctionName": "books-api-dev-profile",
+        "Handler": "handler.profile",
+        "MemorySize": 1024,
+        "Role": {
+          "Fn::GetAtt": [
+            "IamRoleLambdaExecution",
+            "Arn"
+          ]
+        },
+        "Runtime": "nodejs12.x",
+        "Timeout": 6,
+        "Environment": {
+          "Variables": {
+            "BOOKS_TABLE": {
+              "Ref": "booksTable"
+            },
+            "JWT_SECRET": "sofwmenergbelfemoeinlqjerbjfbn"
+          }
+        }
+      },
+      "DependsOn": [
+        "ProfileLogGroup"
+      ]
+    },
+    "ProfileLambdaVersion5VZRqCLKYk8LgW7WE9JTW7TVB3zap5x4ll771to58DU": {
+      "Type": "AWS::Lambda::Version",
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "FunctionName": {
+          "Ref": "ProfileLambdaFunction"
+        },
+        "CodeSha256": "HECaAl9YLWI1lGgILr3hdz0HVvpdTqmBIi9zbU+dkpg="
       }
     },
     "SaveLambdaFunction": {
@@ -221,7 +271,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/books-api/dev/1604879252060-2020-11-08T23:47:32.060Z/books-api.zip"
+          "S3Key": "serverless/books-api/dev/1606292663467-2020-11-25T08:24:23.467Z/books-api.zip"
         },
         "FunctionName": "books-api-dev-save",
         "Handler": "handler.save",
@@ -238,7 +288,8 @@
           "Variables": {
             "BOOKS_TABLE": {
               "Ref": "booksTable"
-            }
+            },
+            "JWT_SECRET": "sofwmenergbelfemoeinlqjerbjfbn"
           }
         }
       },
@@ -246,14 +297,14 @@
         "SaveLogGroup"
       ]
     },
-    "SaveLambdaVersionAKLG39THr98pSSt50bNrBentPuoczxnwHG2xJJUr8": {
+    "SaveLambdaVersion9QktHzw9g0bvxuGUrtgM3jToCnMjI52P4tz4RzuPDE": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "SaveLambdaFunction"
         },
-        "CodeSha256": "MM/9kI5/bLyDwXEr574k8Aq2CgNe5oxcwyzyTHcpeQs="
+        "CodeSha256": "HECaAl9YLWI1lGgILr3hdz0HVvpdTqmBIi9zbU+dkpg="
       }
     },
     "SignupLambdaFunction": {
@@ -263,7 +314,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/books-api/dev/1604879252060-2020-11-08T23:47:32.060Z/books-api.zip"
+          "S3Key": "serverless/books-api/dev/1606292663467-2020-11-25T08:24:23.467Z/books-api.zip"
         },
         "FunctionName": "books-api-dev-signup",
         "Handler": "handler.signup",
@@ -280,7 +331,8 @@
           "Variables": {
             "BOOKS_TABLE": {
               "Ref": "booksTable"
-            }
+            },
+            "JWT_SECRET": "sofwmenergbelfemoeinlqjerbjfbn"
           }
         }
       },
@@ -288,14 +340,14 @@
         "SignupLogGroup"
       ]
     },
-    "SignupLambdaVersionlIXwUW8QhrkwbVh4YGeaCLcTA7bQeCyLqpwgMZuHWZE": {
+    "SignupLambdaVersionASRG2rZffSPmFBEPGD0F3rs4SuFdpp4McNnsed6E": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "SignupLambdaFunction"
         },
-        "CodeSha256": "MM/9kI5/bLyDwXEr574k8Aq2CgNe5oxcwyzyTHcpeQs="
+        "CodeSha256": "HECaAl9YLWI1lGgILr3hdz0HVvpdTqmBIi9zbU+dkpg="
       }
     },
     "LoginLambdaFunction": {
@@ -305,7 +357,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/books-api/dev/1604879252060-2020-11-08T23:47:32.060Z/books-api.zip"
+          "S3Key": "serverless/books-api/dev/1606292663467-2020-11-25T08:24:23.467Z/books-api.zip"
         },
         "FunctionName": "books-api-dev-login",
         "Handler": "handler.login",
@@ -322,7 +374,8 @@
           "Variables": {
             "BOOKS_TABLE": {
               "Ref": "booksTable"
-            }
+            },
+            "JWT_SECRET": "sofwmenergbelfemoeinlqjerbjfbn"
           }
         }
       },
@@ -330,14 +383,14 @@
         "LoginLogGroup"
       ]
     },
-    "LoginLambdaVersionD7mLQn8SUuq4L8SetHORSUTIzD4DCo1yn4LMbvsFEo": {
+    "LoginLambdaVersion8rFyH3wMvjACYBb177ntIkoHNk42PbFd4teKVjHtMA": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "LoginLambdaFunction"
         },
-        "CodeSha256": "MM/9kI5/bLyDwXEr574k8Aq2CgNe5oxcwyzyTHcpeQs="
+        "CodeSha256": "HECaAl9YLWI1lGgILr3hdz0HVvpdTqmBIi9zbU+dkpg="
       }
     },
     "ApiGatewayRestApi": {
@@ -362,6 +415,21 @@
           ]
         },
         "PathPart": "lists",
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        }
+      }
+    },
+    "ApiGatewayResourceProfile": {
+      "Type": "AWS::ApiGateway::Resource",
+      "Properties": {
+        "ParentId": {
+          "Fn::GetAtt": [
+            "ApiGatewayRestApi",
+            "RootResourceId"
+          ]
+        },
+        "PathPart": "profile",
         "RestApiId": {
           "Ref": "ApiGatewayRestApi"
         }
@@ -451,6 +519,51 @@
         },
         "ResourceId": {
           "Ref": "ApiGatewayResourceLists"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        }
+      }
+    },
+    "ApiGatewayMethodProfileOptions": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "AuthorizationType": "NONE",
+        "HttpMethod": "OPTIONS",
+        "MethodResponses": [
+          {
+            "StatusCode": "200",
+            "ResponseParameters": {
+              "method.response.header.Access-Control-Allow-Origin": true,
+              "method.response.header.Access-Control-Allow-Headers": true,
+              "method.response.header.Access-Control-Allow-Methods": true
+            },
+            "ResponseModels": {}
+          }
+        ],
+        "RequestParameters": {},
+        "Integration": {
+          "Type": "MOCK",
+          "RequestTemplates": {
+            "application/json": "{statusCode:200}"
+          },
+          "ContentHandling": "CONVERT_TO_TEXT",
+          "IntegrationResponses": [
+            {
+              "StatusCode": "200",
+              "ResponseParameters": {
+                "method.response.header.Access-Control-Allow-Origin": "'*'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+                "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET'"
+              },
+              "ResponseTemplates": {
+                "application/json": "#set($origin = $input.params(\"Origin\"))\n#if($origin == \"\") #set($origin = $input.params(\"origin\")) #end\n#if($origin.matches(\".+\")) #set($context.responseOverride.header.Access-Control-Allow-Origin = $origin) #end"
+              }
+            }
+          ]
+        },
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceProfile"
         },
         "RestApiId": {
           "Ref": "ApiGatewayRestApi"
@@ -635,6 +748,49 @@
         "MethodResponses": []
       }
     },
+    "ApiGatewayMethodProfileGet": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "GET",
+        "RequestParameters": {},
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceProfile"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        },
+        "ApiKeyRequired": false,
+        "AuthorizationType": "NONE",
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "ProfileLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          }
+        },
+        "MethodResponses": []
+      }
+    },
     "ApiGatewayMethodSavePost": {
       "Type": "AWS::ApiGateway::Method",
       "Properties": {
@@ -764,7 +920,7 @@
         "MethodResponses": []
       }
     },
-    "ApiGatewayDeployment1604879250386": {
+    "ApiGatewayDeployment1606292661047": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -774,10 +930,12 @@
       },
       "DependsOn": [
         "ApiGatewayMethodListsOptions",
+        "ApiGatewayMethodProfileOptions",
         "ApiGatewayMethodSaveOptions",
         "ApiGatewayMethodSignupOptions",
         "ApiGatewayMethodLoginOptions",
         "ApiGatewayMethodListsGet",
+        "ApiGatewayMethodProfileGet",
         "ApiGatewayMethodSavePost",
         "ApiGatewayMethodSignupPost",
         "ApiGatewayMethodLoginPost"
@@ -789,6 +947,43 @@
         "FunctionName": {
           "Fn::GetAtt": [
             "ListsLambdaFunction",
+            "Arn"
+          ]
+        },
+        "Action": "lambda:InvokeFunction",
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition"
+              },
+              ":execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "/*/*"
+            ]
+          ]
+        }
+      }
+    },
+    "ProfileLambdaPermissionApiGateway": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "ProfileLambdaFunction",
             "Arn"
           ]
         },
@@ -971,25 +1166,31 @@
     "ListsLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "ListsLambdaVersionbRTcl38nIosJTCLTWcC8qZ0bV46ZqQHSp0XOna22uE"
+        "Ref": "ListsLambdaVersionUC8AztmuUycnvrHZrh98Y5ZGadfbXbCQvFdtyzXB5g"
+      }
+    },
+    "ProfileLambdaFunctionQualifiedArn": {
+      "Description": "Current Lambda function version",
+      "Value": {
+        "Ref": "ProfileLambdaVersion5VZRqCLKYk8LgW7WE9JTW7TVB3zap5x4ll771to58DU"
       }
     },
     "SaveLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "SaveLambdaVersionAKLG39THr98pSSt50bNrBentPuoczxnwHG2xJJUr8"
+        "Ref": "SaveLambdaVersion9QktHzw9g0bvxuGUrtgM3jToCnMjI52P4tz4RzuPDE"
       }
     },
     "SignupLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "SignupLambdaVersionlIXwUW8QhrkwbVh4YGeaCLcTA7bQeCyLqpwgMZuHWZE"
+        "Ref": "SignupLambdaVersionASRG2rZffSPmFBEPGD0F3rs4SuFdpp4McNnsed6E"
       }
     },
     "LoginLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "LoginLambdaVersionD7mLQn8SUuq4L8SetHORSUTIzD4DCo1yn4LMbvsFEo"
+        "Ref": "LoginLambdaVersion8rFyH3wMvjACYBb177ntIkoHNk42PbFd4teKVjHtMA"
       }
     },
     "ServiceEndpoint": {

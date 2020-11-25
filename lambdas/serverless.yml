@@ -8,6 +8,7 @@ provider:
   runtime: nodejs12.x
   environment:
     BOOKS_TABLE: { Ref: booksTable }
+    JWT_SECRET: "sofwmenergbelfemoeinlqjerbjfbn"
   iamRoleStatements:
     - Effect: Allow
       Action:

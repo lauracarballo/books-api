@@ -11,7 +11,7 @@ import PrivateRoute from "../PrivateRoute";
 
 const key = process.env.REACT_APP_KEY;
 
-const IS_LOCAL = true;
+const IS_LOCAL = false;
 const API_URL = IS_LOCAL
   ? "http://localhost:5000"
   : "https://mawxfs6gx5.execute-api.us-east-1.amazonaws.com";

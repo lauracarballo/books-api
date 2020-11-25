@@ -2,7 +2,7 @@ const AWS = require("aws-sdk");
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
 const jwt = require("jsonwebtoken");
 
-const JWT_SECRET = "mykey";
+const { JWT_SECRET } = process.env;
 
 module.exports.signup = async (event) => {
   const userInput = JSON.parse(event.body);
@@ -10,14 +10,33 @@ module.exports.signup = async (event) => {
 
   if (userInput.email && userInput.password && userInput.name) {
     await dynamoDb
-      .put({
-        TableName: "bookshelf",
-        Item: {
-          userId: userInput.email,
-          sortKey: "profile",
-          name: userInput.name,
-          password: userInput.password,
-          email: userInput.email,
+      .batchWrite({
+        RequestItems: {
+          bookshelf: [
+            {
+              PutRequest: {
+                Item: {
+                  userId: userInput.email,
+                  sortKey: "profile",
+                  name: userInput.name,
+                  password: userInput.password,
+                  email: userInput.email,
+                },
+              },
+            },
+            {
+              PutRequest: {
+                Item: {
+                  userId: userInput.email,
+                  sortKey: "books",
+                  lists: {
+                    wishlist: [],
+                    books: [],
+                  },
+                },
+              },
+            },
+          ],
         },
       })
       .promise();
@@ -29,7 +48,6 @@ module.exports.signup = async (event) => {
       JWT_SECRET,
       { expiresIn: "1h" }
     );
-    console.log(token);
 
     return {
       statusCode: 200,
