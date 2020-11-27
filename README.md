@@ -1,68 +1,39 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# My Personal Bookshelf
 
-## Available Scripts
+Full Stack App created with React, DynamoDB and AWS serverless to build your own personal bookshelf.
 
-In the project directory, you can run:
+![Bookshelf](./public/img/bookshelf-readme.png)
 
-### `npm start`
+## Motivation
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+My personal bookshelf started as a side project to learn how to get data from external API's using React Hooks, but to provide a better UI experience I perfected the app by introducing other functionalities such as a Search Bar using `react-select` and Drag and Drop using `react-beautiful-dnd`.
 
-The page will reload if you make edits.<br />
+To enable a full user experience I added a login and sign up page and then built a database to store and authenticate each user using a single-table design with DynamoDB. For authentication I used JSON Web Tokens and saved each user's session in a JWT to keep the user logged in.
+
+## Technologies
+
+- React v16.13.1
+- DynamoDB
+- AWS serverless
+
+## Setup
+
+Clone this repo `git clone https://github.com/lauracarballo/books-api` to your desktop and run `npm install` to install all the dependencies.
+
+## To run the project
+
+`npm start`
+
+Runs the app in the development mode.
+Open http://localhost:3000 to view it in the browser.
+
+The page will reload if you make edits.
 You will also see any lint errors in the console.
 
-### `npm test`
+`npm run lambdas`
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Runs the server in the development mode.
 
-### `npm run build`
+`npm run deploy-lambdas`
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+Deploys your entire service via CloudFormation. Run this command when you have made infrastructure changes (i.e., you edited serverless.yml).

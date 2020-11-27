@@ -23,7 +23,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "lambdas": "sls offline --httpPort 5000",
+    "deploy-lambdas": "sls deploy"
   },
   "eslintConfig": {
     "extends": "react-app"
