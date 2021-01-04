@@ -1,5 +1,8 @@
 import React, { useState } from "react";
+import styled from "styled-components";
+import { DeleteButton } from "./Button";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import SelectedBooks from "./SelectedBook";
 
 export default function Books({ setLists, lists, remove }) {
   const [select, setSelect] = useState(null);
@@ -48,7 +51,7 @@ export default function Books({ setLists, lists, remove }) {
     <DragDropContext onDragEnd={handleOnDragEnd}>
       <Droppable droppableId="books" direction="horizontal">
         {(provided) => (
-          <ul
+          <List
             className="books"
             {...provided.droppableProps}
             ref={provided.innerRef}
@@ -62,74 +65,42 @@ export default function Books({ setLists, lists, remove }) {
                   index={index}
                 >
                   {(provided) => (
-                    <li
+                    <ListItem
                       ref={provided.innerRef}
                       {...provided.draggableProps}
                       {...provided.dragHandleProps}
-                      className="book-item"
                     >
                       {remove ? (
-                        <div className="delete-button">
-                          <button
+                        <ButtonWrapper>
+                          <DeleteButton
                             onClick={() => handleDelete("books", index)}
-                            className="delete-button__inner-button"
                           >
                             x
-                          </button>
-                        </div>
+                          </DeleteButton>
+                        </ButtonWrapper>
                       ) : null}
                       {item.image && (
-                        <img
+                        <Image
                           onClick={() => handleSelect(item)}
-                          className="book__img"
                           src={item.image}
                           alt=""
                         />
                       )}
-                    </li>
+                    </ListItem>
                   )}
                 </Draggable>
               );
             })}
             {provided.placeholder}
-          </ul>
+          </List>
         )}
       </Droppable>
 
       <div>
-        {select ? (
-          <div
-            className="book__content-background"
-            onClick={() => {
-              setSelect(false);
-            }}
-          >
-            <div className="book__content">
-              {select.image && (
-                <img className="book__content__img" src={select.image} alt="" />
-              )}
-              <div className="book__content__description">
-                <div className="book__content__description-item book__content__description-item-title">
-                  {select.title}
-                </div>
-                <div className="book__content__description-item">
-                  {select.authors.join(", ")}
-                </div>
-                <div className="book__content__description-item">
-                  {select.description}
-                </div>
-              </div>
-            </div>
-          </div>
-        ) : null}
-      </div>
-
-      <div>
         <h2>To be read...</h2>
-
         <Droppable droppableId="wishlist" direction="horizontal">
           {(provided) => (
-            <ul
+            <List
               className="wishlist"
               {...provided.droppableProps}
               ref={provided.innerRef}
@@ -144,40 +115,71 @@ export default function Books({ setLists, lists, remove }) {
                     index={index}
                   >
                     {(provided) => (
-                      <li
+                      <ListItem
                         ref={provided.innerRef}
                         {...provided.draggableProps}
                         {...provided.dragHandleProps}
-                        className="wishlist-item"
                       >
                         {remove ? (
-                          <div className="delete-button">
-                            <button
+                          <ButtonWrapper>
+                            <DeleteButton
                               onClick={() => handleDelete("wishlist", index)}
-                              className="delete-button__inner-button"
                             >
                               x
-                            </button>
-                          </div>
+                            </DeleteButton>
+                          </ButtonWrapper>
                         ) : null}
                         {item.image && (
-                          <img
+                          <Image
                             onClick={() => handleSelect(item)}
-                            className="book__img"
                             src={item.image}
                             alt=""
                           />
                         )}
-                      </li>
+                      </ListItem>
                     )}
                   </Draggable>
                 );
               })}
               {provided.placeholder}
-            </ul>
+            </List>
           )}
         </Droppable>
       </div>
+      <SelectedBooks select={select} setSelect={setSelect} />
     </DragDropContext>
   );
 }
+
+export const List = styled.ul`
+  display: flex;
+  margin: 10px 0px;
+  padding: 12px 15px;
+  box-shadow: 8px 0px 8px #523906;
+  width: 100%;
+  min-height: 220px;
+  max-height: 220px;
+  white-space: nowrap;
+  overflow: scroll;
+  justify-content: flex-start;
+  font-family: "Open Sans", cursive;
+  background-image: url("/img/wood.jpeg");
+  background-size: cover;
+  position: relative;
+`;
+
+export const ListItem = styled.li`
+  padding: 12px 15px;
+  max-width: 150px;
+  text-align: center;
+`;
+
+export const ButtonWrapper = styled.div`
+  display: flex;
+  justify-content: flex-end;
+`;
+
+export const Image = styled.img`
+  width: 110px;
+  height: 160px;
+`;

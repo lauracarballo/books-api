@@ -8,7 +8,7 @@ provider:
   runtime: nodejs12.x
   environment:
     BOOKS_TABLE: { Ref: booksTable }
-    JWT_SECRET: "sofwmenergbelfemoeinlqjerbjfbn"
+    JWT_SECRET: ${env:JWT_SECRET}
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -16,6 +16,7 @@ provider:
         - dynamodb:Scan
         - dynamodb:GetItem
         - dynamodb:DeleteItem
+        - dynamodb:BatchWriteItem
       Resource: { Fn::GetAtt: [booksTable, Arn] }
 
 functions:
@@ -77,3 +78,4 @@ resources:
 
 plugins:
   - serverless-offline
+  - serverless-dotenv-plugin

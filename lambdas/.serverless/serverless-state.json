@@ -22,7 +22,8 @@
             "dynamodb:PutItem",
             "dynamodb:Scan",
             "dynamodb:GetItem",
-            "dynamodb:DeleteItem"
+            "dynamodb:DeleteItem",
+            "dynamodb:BatchWriteItem"
           ],
           "Resource": {
             "Fn::GetAtt": [
@@ -209,7 +210,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/books-api/dev/1606292663467-2020-11-25T08:24:23.467Z/books-api.zip"
+                "S3Key": "serverless/books-api/dev/1609723637869-2021-01-04T01:27:17.869Z/books-api.zip"
               },
               "FunctionName": "books-api-dev-lists",
               "Handler": "handler.lists",
@@ -235,14 +236,14 @@
               "ListsLogGroup"
             ]
           },
-          "ListsLambdaVersionUC8AztmuUycnvrHZrh98Y5ZGadfbXbCQvFdtyzXB5g": {
+          "ListsLambdaVersionICTl0fsEFW5Z0EcEDPfOmVNYHIBiEajAFNUtc1nNs": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "ListsLambdaFunction"
               },
-              "CodeSha256": "HECaAl9YLWI1lGgILr3hdz0HVvpdTqmBIi9zbU+dkpg="
+              "CodeSha256": "0Py4aytlcdBg1zFheuvVx+UIBd7SSCVbCK1Mw0EBybk="
             }
           },
           "ProfileLambdaFunction": {
@@ -252,7 +253,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/books-api/dev/1606292663467-2020-11-25T08:24:23.467Z/books-api.zip"
+                "S3Key": "serverless/books-api/dev/1609723637869-2021-01-04T01:27:17.869Z/books-api.zip"
               },
               "FunctionName": "books-api-dev-profile",
               "Handler": "handler.profile",
@@ -278,14 +279,14 @@
               "ProfileLogGroup"
             ]
           },
-          "ProfileLambdaVersion5VZRqCLKYk8LgW7WE9JTW7TVB3zap5x4ll771to58DU": {
+          "ProfileLambdaVersionCVLHqNTMBT0OCAU1JYZbqW7kFyV5VfYEBWvYax0c0": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "ProfileLambdaFunction"
               },
-              "CodeSha256": "HECaAl9YLWI1lGgILr3hdz0HVvpdTqmBIi9zbU+dkpg="
+              "CodeSha256": "0Py4aytlcdBg1zFheuvVx+UIBd7SSCVbCK1Mw0EBybk="
             }
           },
           "SaveLambdaFunction": {
@@ -295,7 +296,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/books-api/dev/1606292663467-2020-11-25T08:24:23.467Z/books-api.zip"
+                "S3Key": "serverless/books-api/dev/1609723637869-2021-01-04T01:27:17.869Z/books-api.zip"
               },
               "FunctionName": "books-api-dev-save",
               "Handler": "handler.save",
@@ -321,14 +322,14 @@
               "SaveLogGroup"
             ]
           },
-          "SaveLambdaVersion9QktHzw9g0bvxuGUrtgM3jToCnMjI52P4tz4RzuPDE": {
+          "SaveLambdaVersionSuF2dyXewK3tH6sJo4ghlb5Sm0yt2rTLHd47OnThw": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "SaveLambdaFunction"
               },
-              "CodeSha256": "HECaAl9YLWI1lGgILr3hdz0HVvpdTqmBIi9zbU+dkpg="
+              "CodeSha256": "0Py4aytlcdBg1zFheuvVx+UIBd7SSCVbCK1Mw0EBybk="
             }
           },
           "SignupLambdaFunction": {
@@ -338,7 +339,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/books-api/dev/1606292663467-2020-11-25T08:24:23.467Z/books-api.zip"
+                "S3Key": "serverless/books-api/dev/1609723637869-2021-01-04T01:27:17.869Z/books-api.zip"
               },
               "FunctionName": "books-api-dev-signup",
               "Handler": "handler.signup",
@@ -364,14 +365,14 @@
               "SignupLogGroup"
             ]
           },
-          "SignupLambdaVersionASRG2rZffSPmFBEPGD0F3rs4SuFdpp4McNnsed6E": {
+          "SignupLambdaVersionYfHA69Ze3kVEf7XyrnnWpMmdnNPNtH2DigbL8eAeaE": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "SignupLambdaFunction"
               },
-              "CodeSha256": "HECaAl9YLWI1lGgILr3hdz0HVvpdTqmBIi9zbU+dkpg="
+              "CodeSha256": "0Py4aytlcdBg1zFheuvVx+UIBd7SSCVbCK1Mw0EBybk="
             }
           },
           "LoginLambdaFunction": {
@@ -381,7 +382,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/books-api/dev/1606292663467-2020-11-25T08:24:23.467Z/books-api.zip"
+                "S3Key": "serverless/books-api/dev/1609723637869-2021-01-04T01:27:17.869Z/books-api.zip"
               },
               "FunctionName": "books-api-dev-login",
               "Handler": "handler.login",
@@ -407,14 +408,14 @@
               "LoginLogGroup"
             ]
           },
-          "LoginLambdaVersion8rFyH3wMvjACYBb177ntIkoHNk42PbFd4teKVjHtMA": {
+          "LoginLambdaVersionAywVHN5lEgUPPyUzqysdbxAtpgGn3IadXMKXD6STyw": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "LoginLambdaFunction"
               },
-              "CodeSha256": "HECaAl9YLWI1lGgILr3hdz0HVvpdTqmBIi9zbU+dkpg="
+              "CodeSha256": "0Py4aytlcdBg1zFheuvVx+UIBd7SSCVbCK1Mw0EBybk="
             }
           },
           "ApiGatewayRestApi": {
@@ -944,7 +945,7 @@
               "MethodResponses": []
             }
           },
-          "ApiGatewayDeployment1606292661047": {
+          "ApiGatewayDeployment1609723635241": {
             "Type": "AWS::ApiGateway::Deployment",
             "Properties": {
               "RestApiId": {
@@ -1190,31 +1191,31 @@
           "ListsLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "ListsLambdaVersionUC8AztmuUycnvrHZrh98Y5ZGadfbXbCQvFdtyzXB5g"
+              "Ref": "ListsLambdaVersionICTl0fsEFW5Z0EcEDPfOmVNYHIBiEajAFNUtc1nNs"
             }
           },
           "ProfileLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "ProfileLambdaVersion5VZRqCLKYk8LgW7WE9JTW7TVB3zap5x4ll771to58DU"
+              "Ref": "ProfileLambdaVersionCVLHqNTMBT0OCAU1JYZbqW7kFyV5VfYEBWvYax0c0"
             }
           },
           "SaveLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "SaveLambdaVersion9QktHzw9g0bvxuGUrtgM3jToCnMjI52P4tz4RzuPDE"
+              "Ref": "SaveLambdaVersionSuF2dyXewK3tH6sJo4ghlb5Sm0yt2rTLHd47OnThw"
             }
           },
           "SignupLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "SignupLambdaVersionASRG2rZffSPmFBEPGD0F3rs4SuFdpp4McNnsed6E"
+              "Ref": "SignupLambdaVersionYfHA69Ze3kVEf7XyrnnWpMmdnNPNtH2DigbL8eAeaE"
             }
           },
           "LoginLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "LoginLambdaVersion8rFyH3wMvjACYBb177ntIkoHNk42PbFd4teKVjHtMA"
+              "Ref": "LoginLambdaVersionAywVHN5lEgUPPyUzqysdbxAtpgGn3IadXMKXD6STyw"
             }
           },
           "ServiceEndpoint": {
@@ -1312,7 +1313,8 @@
       "vpc": {}
     },
     "plugins": [
-      "serverless-offline"
+      "serverless-offline",
+      "serverless-dotenv-plugin"
     ],
     "pluginsData": {},
     "functions": {
@@ -1352,7 +1354,7 @@
         "timeout": 6,
         "runtime": "nodejs12.x",
         "vpc": {},
-        "versionLogicalId": "ListsLambdaVersionUC8AztmuUycnvrHZrh98Y5ZGadfbXbCQvFdtyzXB5g"
+        "versionLogicalId": "ListsLambdaVersionICTl0fsEFW5Z0EcEDPfOmVNYHIBiEajAFNUtc1nNs"
       },
       "profile": {
         "handler": "handler.profile",
@@ -1390,7 +1392,7 @@
         "timeout": 6,
         "runtime": "nodejs12.x",
         "vpc": {},
-        "versionLogicalId": "ProfileLambdaVersion5VZRqCLKYk8LgW7WE9JTW7TVB3zap5x4ll771to58DU"
+        "versionLogicalId": "ProfileLambdaVersionCVLHqNTMBT0OCAU1JYZbqW7kFyV5VfYEBWvYax0c0"
       },
       "save": {
         "handler": "handler.save",
@@ -1428,7 +1430,7 @@
         "timeout": 6,
         "runtime": "nodejs12.x",
         "vpc": {},
-        "versionLogicalId": "SaveLambdaVersion9QktHzw9g0bvxuGUrtgM3jToCnMjI52P4tz4RzuPDE"
+        "versionLogicalId": "SaveLambdaVersionSuF2dyXewK3tH6sJo4ghlb5Sm0yt2rTLHd47OnThw"
       },
       "signup": {
         "handler": "handler.signup",
@@ -1466,7 +1468,7 @@
         "timeout": 6,
         "runtime": "nodejs12.x",
         "vpc": {},
-        "versionLogicalId": "SignupLambdaVersionASRG2rZffSPmFBEPGD0F3rs4SuFdpp4McNnsed6E"
+        "versionLogicalId": "SignupLambdaVersionYfHA69Ze3kVEf7XyrnnWpMmdnNPNtH2DigbL8eAeaE"
       },
       "login": {
         "handler": "handler.login",
@@ -1504,7 +1506,7 @@
         "timeout": 6,
         "runtime": "nodejs12.x",
         "vpc": {},
-        "versionLogicalId": "LoginLambdaVersion8rFyH3wMvjACYBb177ntIkoHNk42PbFd4teKVjHtMA"
+        "versionLogicalId": "LoginLambdaVersionAywVHN5lEgUPPyUzqysdbxAtpgGn3IadXMKXD6STyw"
       }
     },
     "resources": {
@@ -1564,7 +1566,8 @@
               "dynamodb:PutItem",
               "dynamodb:Scan",
               "dynamodb:GetItem",
-              "dynamodb:DeleteItem"
+              "dynamodb:DeleteItem",
+              "dynamodb:BatchWriteItem"
             ],
             "Resource": {
               "Fn::GetAtt": [
@@ -1589,7 +1592,7 @@
     "artifact": "/Users/lauracarballo/Desktop/books-api/lambdas/.serverless/books-api.zip"
   },
   "package": {
-    "artifactDirectoryName": "serverless/books-api/dev/1606292663467-2020-11-25T08:24:23.467Z",
+    "artifactDirectoryName": "serverless/books-api/dev/1609723637869-2021-01-04T01:27:17.869Z",
     "artifact": "books-api.zip"
   }
 }

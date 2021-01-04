@@ -1,6 +1,10 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import styled from "styled-components";
 import { useAuth } from "../context/auth";
+import { FormWrapper } from "../components/FormWrapper";
+import { Input } from "../components/Input";
+import { Button } from "../components/Button";
+import { Link } from "react-router-dom";
 
 export default function Login() {
   const { login } = useAuth();
@@ -8,43 +12,55 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  function handleLogin() {
+  function handleLogin(event) {
+    event.preventDefault();
     login(email, password);
   }
 
   return (
-    <div className="login">
+    <LoginWrapper>
       <div>
         <h1>MY PERSONAL BOOKSHELF</h1>
 
-        <div className="login__form">
-          <input
+        <FormWrapper onSubmit={handleLogin}>
+          <Input
             value={email}
-            className="login__form-input"
-            onChange={(e) => {
-              setEmail(e.target.value);
-            }}
+            onChange={(e) => setEmail(e.target.value)}
             type="email"
-            placeholder="email"
+            placeholder="Email"
           />
-          <input
+          <Input
             value={password}
-            className="login__form-input"
-            onChange={(e) => {
-              setPassword(e.target.value);
-            }}
+            onChange={(e) => setPassword(e.target.value)}
             type="password"
-            placeholder="password"
+            placeholder="Password"
           />
-          <button onClick={handleLogin} className="login__form-button">
-            Sign In
-          </button>
+          <Button>Sign In</Button>
 
-          <Link className="login__form-link" to="/signup">
-            Don't have an account?
-          </Link>
-        </div>
+          <StyledLink to="/signup">Don't have an account?</StyledLink>
+        </FormWrapper>
       </div>
-    </div>
+    </LoginWrapper>
   );
 }
+
+export const LoginWrapper = styled.div`
+  height: 95vh;
+  position: relative;
+  display: grid;
+  place-items: center;
+`;
+
+export const StyledLink = styled(Link)`
+  color: #523906;
+  font-size: 15px;
+  padding-top: 15px;
+
+  &:focus {
+    margin-top: 8px;
+    padding: 5px;
+    border: 2px solid transparent;
+    outline: 3px solid #523906;
+    outline-offset: 3px;
+  }
+`;

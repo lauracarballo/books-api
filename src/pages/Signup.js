@@ -1,6 +1,10 @@
 import React, { useState } from "react";
-import { Link, Redirect } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import { useAuth } from "../context/auth";
+import { Input } from "../components/Input";
+import { FormWrapper } from "../components/FormWrapper";
+import { Button } from "../components/Button";
+import { LoginWrapper, StyledLink } from "./Login";
 
 export default function Signup() {
   const { isAuthenticated, signUp } = useAuth();
@@ -11,6 +15,7 @@ export default function Signup() {
   const [password1, setPassword1] = useState("");
 
   function handleSignUp(event) {
+    event.preventDefault();
     if (password === password1) {
       signUp(name, email, password);
     } else {
@@ -23,54 +28,46 @@ export default function Signup() {
   }
 
   return (
-    <div className="login">
+    <LoginWrapper>
       <div>
         <h1>MY PERSONAL BOOKSHELF</h1>
-        <div className="login__form">
-          <input
+        <FormWrapper onSubmit={handleSignUp}>
+          <Input
             value={name}
             onChange={(e) => {
               setName(e.target.value);
             }}
-            className="login__form-input"
             type="text"
-            placeholder="name"
+            placeholder="Name"
           />
-          <input
+          <Input
             value={email}
             onChange={(e) => {
               setEmail(e.target.value);
             }}
-            className="login__form-input"
             type="email"
-            placeholder="email"
+            placeholder="Email"
           />
-          <input
+          <Input
             value={password}
             onChange={(e) => {
               setPassword(e.target.value);
             }}
-            className="login__form-input"
             type="password"
-            placeholder="password"
+            placeholder="Password"
           />
-          <input
+          <Input
             value={password1}
             onChange={(e) => {
               setPassword1(e.target.value);
             }}
-            className="login__form-input"
             type="password"
-            placeholder="confirm password"
+            placeholder="Confirm password"
           />
-          <button onClick={handleSignUp} className="login__form-button">
-            Sign Up
-          </button>
-          <Link className="login__form-link" to="/">
-            Already have an account?
-          </Link>
-        </div>
+          <Button>Sign Up</Button>
+          <StyledLink to="/">Already have an account?</StyledLink>
+        </FormWrapper>
       </div>
-    </div>
+    </LoginWrapper>
   );
 }

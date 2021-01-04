@@ -1,11 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./components/App";
-import Layout from "./components/Layout";
+import { GlobalStyle } from "./utils/Global";
 
 ReactDOM.render(
-  <Layout>
+  <>
+    <GlobalStyle />
     <App />
-  </Layout>,
+  </>,
   document.getElementById("root")
 );

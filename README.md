@@ -1,6 +1,6 @@
 # My Personal Bookshelf
 
-Full Stack App created with React, DynamoDB and AWS serverless to build your own personal bookshelf.
+Full Stack App created with React, DynamoDB and AWS lambda to build your own personal bookshelf.
 
 ![Bookshelf](./public/img/bookshelf-readme.png)
 

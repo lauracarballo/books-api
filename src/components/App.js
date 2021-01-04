@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
+import styled from "styled-components";
 import Header from "./Header";
 import Books from "./Books";
+import Loading from "./Loading";
 
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { AuthContext, useAuth } from "../context/auth";
@@ -69,7 +71,7 @@ function BookLists() {
   }
 
   return (
-    <div className="page">
+    <PageWrapper>
       <Header
         username={username}
         setLists={setLists}
@@ -77,7 +79,7 @@ function BookLists() {
         value={value}
       />
       <Books setLists={setLists} lists={lists} remove={remove} />
-    </div>
+    </PageWrapper>
   );
 }
 
@@ -100,6 +102,8 @@ export default function App() {
       })
         .then((res) => res.json())
         .catch(() => logout());
+
+      console.log({ storedProfile });
 
       if (storedProfile.success) {
         setUsername(storedProfile.name);
@@ -158,7 +162,7 @@ export default function App() {
       }}
     >
       {isLoading ? (
-        <div>Loading...</div>
+        <Loading />
       ) : (
         <Router>
           <Route path="/signup" component={Signup} />
@@ -168,3 +172,8 @@ export default function App() {
     </AuthContext.Provider>
   );
 }
+
+export const PageWrapper = styled.section`
+  width: 90%;
+  margin: 10px auto;
+`;
