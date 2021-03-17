@@ -8,7 +8,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { AuthContext, useAuth } from "../context/auth";
 
 import Signup from "../pages/Signup";
-import UserProfile from "../pages/UserProfile";
+// import UserProfile from "../pages/UserProfile";
 import PrivateRoute from "../PrivateRoute";
 
 const IS_LOCAL = true;
@@ -172,7 +172,7 @@ export default function App() {
         <Router>
           <Switch>
             <Route path="/signup" component={Signup} />
-            <Route path="/:shareId" component={UserProfile} />
+            {/* <Route path="/:shareId" component={UserProfile} /> */}
             <PrivateRoute path="/" exact component={BookLists} />
           </Switch>
         </Router>
