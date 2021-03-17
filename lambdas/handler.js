@@ -1,6 +1,7 @@
 const AWS = require("aws-sdk");
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
 const jwt = require("jsonwebtoken");
+const { default: ShortUniqueId } = require("short-unique-id");
 
 const { JWT_SECRET } = process.env;
 
@@ -9,6 +10,8 @@ module.exports.signup = async (event) => {
   console.log(userInput);
 
   if (userInput.email && userInput.password && userInput.name) {
+    const uid = new ShortUniqueId();
+
     await dynamoDb
       .batchWrite({
         RequestItems: {
@@ -33,6 +36,7 @@ module.exports.signup = async (event) => {
                     wishlist: [],
                     books: [],
                   },
+                  shareId: uid(),
                 },
               },
             },
@@ -130,12 +134,15 @@ module.exports.save = async (event) => {
 
   if (userInput.lists) {
     await dynamoDb
-      .put({
+      .update({
         TableName: "bookshelf",
-        Item: {
+        Key: {
           userId: decoded.userId,
           sortKey: "books",
-          lists: userInput.lists,
+        },
+        UpdateExpression: "set lists = :lists",
+        ExpressionAttributeValues: {
+          ":lists": userInput.lists,
         },
       })
       .promise();
@@ -178,7 +185,10 @@ module.exports.lists = async (event) => {
       headers: {
         "Access-Control-Allow-Origin": "*",
       },
-      body: JSON.stringify({ success: true, lists: data.Item.lists }),
+      body: JSON.stringify({
+        success: true,
+        lists: data.Item.lists,
+      }),
     };
   }
 };
@@ -212,6 +222,41 @@ module.exports.profile = async (event) => {
         "Access-Control-Allow-Origin": "*",
       },
       body: JSON.stringify({ success: true, name: data.Item.name }),
+    };
+  }
+};
+
+module.exports.sharedLists = async (event) => {
+  const authHeader = event.headers.Authorization;
+  const token = authHeader.slice(7);
+  console.log({ token });
+
+  const decoded = jwt.verify(token, JWT_SECRET);
+  const data = await dynamoDb
+    .get({
+      TableName: "bookshelf",
+      Key: { userId: decoded.userId, sortKey: "books" },
+    })
+    .promise();
+
+  if (!data.Item) {
+    return {
+      statusCode: 401,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+      },
+      body: JSON.stringify({ success: false, err: "not authorized" }),
+    };
+  } else {
+    return {
+      statusCode: 200,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+      },
+      body: JSON.stringify({
+        success: true,
+        lists: data.Item.lists,
+      }),
     };
   }
 };

@@ -4,13 +4,14 @@ import Header from "./Header";
 import Books from "./Books";
 import Loading from "./Loading";
 
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { AuthContext, useAuth } from "../context/auth";
 
 import Signup from "../pages/Signup";
+import UserProfile from "../pages/UserProfile";
 import PrivateRoute from "../PrivateRoute";
 
-const IS_LOCAL = false;
+const IS_LOCAL = true;
 const API_URL = IS_LOCAL
   ? "http://localhost:5000"
   : "https://mawxfs6gx5.execute-api.us-east-1.amazonaws.com";
@@ -32,6 +33,8 @@ function BookLists() {
         Authorization: `Bearer ${authToken}`,
       },
     }).then((res) => res.json());
+
+    console.log(storedLists);
 
     if (storedLists.success) {
       setLists(storedLists.lists);
@@ -105,7 +108,9 @@ export default function App() {
 
       console.log({ storedProfile });
 
-      if (storedProfile.success) {
+      if (!storedProfile && storedProfile === undefined) {
+        logout();
+      } else if (storedProfile.success) {
         setUsername(storedProfile.name);
         setIsAuthenticated(true);
         setLoading(false);
@@ -165,8 +170,11 @@ export default function App() {
         <Loading />
       ) : (
         <Router>
-          <Route path="/signup" component={Signup} />
-          <PrivateRoute path="/" exact component={BookLists} />
+          <Switch>
+            <Route path="/signup" component={Signup} />
+            <Route path="/:shareId" component={UserProfile} />
+            <PrivateRoute path="/" exact component={BookLists} />
+          </Switch>
         </Router>
       )}
     </AuthContext.Provider>
