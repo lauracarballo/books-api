@@ -44,6 +44,21 @@
                       "/*"
                     ]
                   ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":s3:::",
+                      {
+                        "Ref": "ServerlessDeploymentBucket"
+                      }
+                    ]
+                  ]
                 }
               ],
               "Condition": {
@@ -84,6 +99,12 @@
       "Type": "AWS::Logs::LogGroup",
       "Properties": {
         "LogGroupName": "/aws/lambda/books-api-dev-login"
+      }
+    },
+    "SharedListsLogGroup": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": "/aws/lambda/books-api-dev-sharedLists"
       }
     },
     "IamRoleLambdaExecution": {
@@ -186,18 +207,12 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/books-api/dev/1609723637869-2021-01-04T01:27:17.869Z/books-api.zip"
+          "S3Key": "serverless/books-api/dev/1616058239103-2021-03-18T09:03:59.103Z/books-api.zip"
         },
-        "FunctionName": "books-api-dev-lists",
         "Handler": "handler.lists",
-        "MemorySize": 1024,
-        "Role": {
-          "Fn::GetAtt": [
-            "IamRoleLambdaExecution",
-            "Arn"
-          ]
-        },
         "Runtime": "nodejs12.x",
+        "FunctionName": "books-api-dev-lists",
+        "MemorySize": 1024,
         "Timeout": 6,
         "Environment": {
           "Variables": {
@@ -206,21 +221,17 @@
             },
             "JWT_SECRET": "sofwmenergbelfemoeinlqjerbjfbn"
           }
+        },
+        "Role": {
+          "Fn::GetAtt": [
+            "IamRoleLambdaExecution",
+            "Arn"
+          ]
         }
       },
       "DependsOn": [
         "ListsLogGroup"
       ]
-    },
-    "ListsLambdaVersionICTl0fsEFW5Z0EcEDPfOmVNYHIBiEajAFNUtc1nNs": {
-      "Type": "AWS::Lambda::Version",
-      "DeletionPolicy": "Retain",
-      "Properties": {
-        "FunctionName": {
-          "Ref": "ListsLambdaFunction"
-        },
-        "CodeSha256": "0Py4aytlcdBg1zFheuvVx+UIBd7SSCVbCK1Mw0EBybk="
-      }
     },
     "ProfileLambdaFunction": {
       "Type": "AWS::Lambda::Function",
@@ -229,18 +240,12 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/books-api/dev/1609723637869-2021-01-04T01:27:17.869Z/books-api.zip"
+          "S3Key": "serverless/books-api/dev/1616058239103-2021-03-18T09:03:59.103Z/books-api.zip"
         },
-        "FunctionName": "books-api-dev-profile",
         "Handler": "handler.profile",
-        "MemorySize": 1024,
-        "Role": {
-          "Fn::GetAtt": [
-            "IamRoleLambdaExecution",
-            "Arn"
-          ]
-        },
         "Runtime": "nodejs12.x",
+        "FunctionName": "books-api-dev-profile",
+        "MemorySize": 1024,
         "Timeout": 6,
         "Environment": {
           "Variables": {
@@ -249,21 +254,17 @@
             },
             "JWT_SECRET": "sofwmenergbelfemoeinlqjerbjfbn"
           }
+        },
+        "Role": {
+          "Fn::GetAtt": [
+            "IamRoleLambdaExecution",
+            "Arn"
+          ]
         }
       },
       "DependsOn": [
         "ProfileLogGroup"
       ]
-    },
-    "ProfileLambdaVersionCVLHqNTMBT0OCAU1JYZbqW7kFyV5VfYEBWvYax0c0": {
-      "Type": "AWS::Lambda::Version",
-      "DeletionPolicy": "Retain",
-      "Properties": {
-        "FunctionName": {
-          "Ref": "ProfileLambdaFunction"
-        },
-        "CodeSha256": "0Py4aytlcdBg1zFheuvVx+UIBd7SSCVbCK1Mw0EBybk="
-      }
     },
     "SaveLambdaFunction": {
       "Type": "AWS::Lambda::Function",
@@ -272,18 +273,12 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/books-api/dev/1609723637869-2021-01-04T01:27:17.869Z/books-api.zip"
+          "S3Key": "serverless/books-api/dev/1616058239103-2021-03-18T09:03:59.103Z/books-api.zip"
         },
-        "FunctionName": "books-api-dev-save",
         "Handler": "handler.save",
-        "MemorySize": 1024,
-        "Role": {
-          "Fn::GetAtt": [
-            "IamRoleLambdaExecution",
-            "Arn"
-          ]
-        },
         "Runtime": "nodejs12.x",
+        "FunctionName": "books-api-dev-save",
+        "MemorySize": 1024,
         "Timeout": 6,
         "Environment": {
           "Variables": {
@@ -292,21 +287,17 @@
             },
             "JWT_SECRET": "sofwmenergbelfemoeinlqjerbjfbn"
           }
+        },
+        "Role": {
+          "Fn::GetAtt": [
+            "IamRoleLambdaExecution",
+            "Arn"
+          ]
         }
       },
       "DependsOn": [
         "SaveLogGroup"
       ]
-    },
-    "SaveLambdaVersionSuF2dyXewK3tH6sJo4ghlb5Sm0yt2rTLHd47OnThw": {
-      "Type": "AWS::Lambda::Version",
-      "DeletionPolicy": "Retain",
-      "Properties": {
-        "FunctionName": {
-          "Ref": "SaveLambdaFunction"
-        },
-        "CodeSha256": "0Py4aytlcdBg1zFheuvVx+UIBd7SSCVbCK1Mw0EBybk="
-      }
     },
     "SignupLambdaFunction": {
       "Type": "AWS::Lambda::Function",
@@ -315,18 +306,12 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/books-api/dev/1609723637869-2021-01-04T01:27:17.869Z/books-api.zip"
+          "S3Key": "serverless/books-api/dev/1616058239103-2021-03-18T09:03:59.103Z/books-api.zip"
         },
-        "FunctionName": "books-api-dev-signup",
         "Handler": "handler.signup",
-        "MemorySize": 1024,
-        "Role": {
-          "Fn::GetAtt": [
-            "IamRoleLambdaExecution",
-            "Arn"
-          ]
-        },
         "Runtime": "nodejs12.x",
+        "FunctionName": "books-api-dev-signup",
+        "MemorySize": 1024,
         "Timeout": 6,
         "Environment": {
           "Variables": {
@@ -335,21 +320,17 @@
             },
             "JWT_SECRET": "sofwmenergbelfemoeinlqjerbjfbn"
           }
+        },
+        "Role": {
+          "Fn::GetAtt": [
+            "IamRoleLambdaExecution",
+            "Arn"
+          ]
         }
       },
       "DependsOn": [
         "SignupLogGroup"
       ]
-    },
-    "SignupLambdaVersionYfHA69Ze3kVEf7XyrnnWpMmdnNPNtH2DigbL8eAeaE": {
-      "Type": "AWS::Lambda::Version",
-      "DeletionPolicy": "Retain",
-      "Properties": {
-        "FunctionName": {
-          "Ref": "SignupLambdaFunction"
-        },
-        "CodeSha256": "0Py4aytlcdBg1zFheuvVx+UIBd7SSCVbCK1Mw0EBybk="
-      }
     },
     "LoginLambdaFunction": {
       "Type": "AWS::Lambda::Function",
@@ -358,18 +339,12 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/books-api/dev/1609723637869-2021-01-04T01:27:17.869Z/books-api.zip"
+          "S3Key": "serverless/books-api/dev/1616058239103-2021-03-18T09:03:59.103Z/books-api.zip"
         },
-        "FunctionName": "books-api-dev-login",
         "Handler": "handler.login",
-        "MemorySize": 1024,
-        "Role": {
-          "Fn::GetAtt": [
-            "IamRoleLambdaExecution",
-            "Arn"
-          ]
-        },
         "Runtime": "nodejs12.x",
+        "FunctionName": "books-api-dev-login",
+        "MemorySize": 1024,
         "Timeout": 6,
         "Environment": {
           "Variables": {
@@ -378,20 +353,109 @@
             },
             "JWT_SECRET": "sofwmenergbelfemoeinlqjerbjfbn"
           }
+        },
+        "Role": {
+          "Fn::GetAtt": [
+            "IamRoleLambdaExecution",
+            "Arn"
+          ]
         }
       },
       "DependsOn": [
         "LoginLogGroup"
       ]
     },
-    "LoginLambdaVersionAywVHN5lEgUPPyUzqysdbxAtpgGn3IadXMKXD6STyw": {
+    "SharedListsLambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Ref": "ServerlessDeploymentBucket"
+          },
+          "S3Key": "serverless/books-api/dev/1616058239103-2021-03-18T09:03:59.103Z/books-api.zip"
+        },
+        "Handler": "handler.sharedLists",
+        "Runtime": "nodejs12.x",
+        "FunctionName": "books-api-dev-sharedLists",
+        "MemorySize": 1024,
+        "Timeout": 6,
+        "Environment": {
+          "Variables": {
+            "BOOKS_TABLE": {
+              "Ref": "booksTable"
+            },
+            "JWT_SECRET": "sofwmenergbelfemoeinlqjerbjfbn"
+          }
+        },
+        "Role": {
+          "Fn::GetAtt": [
+            "IamRoleLambdaExecution",
+            "Arn"
+          ]
+        }
+      },
+      "DependsOn": [
+        "SharedListsLogGroup"
+      ]
+    },
+    "ProfileLambdaVersionUmVqR7skll4k4zEopMJcU3AaEwljuu2JLu4gzLhEP8": {
+      "Type": "AWS::Lambda::Version",
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "FunctionName": {
+          "Ref": "ProfileLambdaFunction"
+        },
+        "CodeSha256": "KT8qzgWTQxMwIPR39WTLq0/ICJRiUiYXlWuc0HXpBqo="
+      }
+    },
+    "SaveLambdaVersionBPrzTtE0H0BNxRlFYFneCEJwdbY3aXzh3DEkflHUbg": {
+      "Type": "AWS::Lambda::Version",
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "FunctionName": {
+          "Ref": "SaveLambdaFunction"
+        },
+        "CodeSha256": "KT8qzgWTQxMwIPR39WTLq0/ICJRiUiYXlWuc0HXpBqo="
+      }
+    },
+    "SignupLambdaVersionzFjnHzb8nHP0z5Oiu5aWGOqz0JaX3jkO0qt5pslbq1A": {
+      "Type": "AWS::Lambda::Version",
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "FunctionName": {
+          "Ref": "SignupLambdaFunction"
+        },
+        "CodeSha256": "KT8qzgWTQxMwIPR39WTLq0/ICJRiUiYXlWuc0HXpBqo="
+      }
+    },
+    "LoginLambdaVersionBLGF02842DVjHjqpCEDNHdUxG9KQU9L80UnVxu9o": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "LoginLambdaFunction"
         },
-        "CodeSha256": "0Py4aytlcdBg1zFheuvVx+UIBd7SSCVbCK1Mw0EBybk="
+        "CodeSha256": "KT8qzgWTQxMwIPR39WTLq0/ICJRiUiYXlWuc0HXpBqo="
+      }
+    },
+    "SharedListsLambdaVersions4jFM10zZ1fNVWVmLJZzeljACcUQJ4mapPzDpU6y0": {
+      "Type": "AWS::Lambda::Version",
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "FunctionName": {
+          "Ref": "SharedListsLambdaFunction"
+        },
+        "CodeSha256": "KT8qzgWTQxMwIPR39WTLq0/ICJRiUiYXlWuc0HXpBqo="
+      }
+    },
+    "ListsLambdaVersion6eeIuRhEqjACb2SD7s7peRnmueFNkp4QFjq5up9xMA": {
+      "Type": "AWS::Lambda::Version",
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "FunctionName": {
+          "Ref": "ListsLambdaFunction"
+        },
+        "CodeSha256": "KT8qzgWTQxMwIPR39WTLq0/ICJRiUiYXlWuc0HXpBqo="
       }
     },
     "ApiGatewayRestApi": {
@@ -476,6 +540,21 @@
           ]
         },
         "PathPart": "login",
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        }
+      }
+    },
+    "ApiGatewayResourceSharedlists": {
+      "Type": "AWS::ApiGateway::Resource",
+      "Properties": {
+        "ParentId": {
+          "Fn::GetAtt": [
+            "ApiGatewayRestApi",
+            "RootResourceId"
+          ]
+        },
+        "PathPart": "sharedLists",
         "RestApiId": {
           "Ref": "ApiGatewayRestApi"
         }
@@ -706,6 +785,51 @@
         }
       }
     },
+    "ApiGatewayMethodSharedlistsOptions": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "AuthorizationType": "NONE",
+        "HttpMethod": "OPTIONS",
+        "MethodResponses": [
+          {
+            "StatusCode": "200",
+            "ResponseParameters": {
+              "method.response.header.Access-Control-Allow-Origin": true,
+              "method.response.header.Access-Control-Allow-Headers": true,
+              "method.response.header.Access-Control-Allow-Methods": true
+            },
+            "ResponseModels": {}
+          }
+        ],
+        "RequestParameters": {},
+        "Integration": {
+          "Type": "MOCK",
+          "RequestTemplates": {
+            "application/json": "{statusCode:200}"
+          },
+          "ContentHandling": "CONVERT_TO_TEXT",
+          "IntegrationResponses": [
+            {
+              "StatusCode": "200",
+              "ResponseParameters": {
+                "method.response.header.Access-Control-Allow-Origin": "'*'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+                "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET'"
+              },
+              "ResponseTemplates": {
+                "application/json": "#set($origin = $input.params(\"Origin\"))\n#if($origin == \"\") #set($origin = $input.params(\"origin\")) #end\n#if($origin.matches(\".+\")) #set($context.responseOverride.header.Access-Control-Allow-Origin = $origin) #end"
+              }
+            }
+          ]
+        },
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceSharedlists"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        }
+      }
+    },
     "ApiGatewayMethodListsGet": {
       "Type": "AWS::ApiGateway::Method",
       "Properties": {
@@ -921,7 +1045,50 @@
         "MethodResponses": []
       }
     },
-    "ApiGatewayDeployment1609723635241": {
+    "ApiGatewayMethodSharedlistsGet": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "GET",
+        "RequestParameters": {},
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceSharedlists"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        },
+        "ApiKeyRequired": false,
+        "AuthorizationType": "NONE",
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "SharedListsLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          }
+        },
+        "MethodResponses": []
+      }
+    },
+    "ApiGatewayDeployment1616058234320": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -935,11 +1102,13 @@
         "ApiGatewayMethodSaveOptions",
         "ApiGatewayMethodSignupOptions",
         "ApiGatewayMethodLoginOptions",
+        "ApiGatewayMethodSharedlistsOptions",
         "ApiGatewayMethodListsGet",
         "ApiGatewayMethodProfileGet",
         "ApiGatewayMethodSavePost",
         "ApiGatewayMethodSignupPost",
-        "ApiGatewayMethodLoginPost"
+        "ApiGatewayMethodLoginPost",
+        "ApiGatewayMethodSharedlistsGet"
       ]
     },
     "ListsLambdaPermissionApiGateway": {
@@ -1127,6 +1296,43 @@
         }
       }
     },
+    "SharedListsLambdaPermissionApiGateway": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "SharedListsLambdaFunction",
+            "Arn"
+          ]
+        },
+        "Action": "lambda:InvokeFunction",
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition"
+              },
+              ":execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "/*/*"
+            ]
+          ]
+        }
+      }
+    },
     "booksTable": {
       "Type": "AWS::DynamoDB::Table",
       "Properties": {
@@ -1164,34 +1370,40 @@
         "Ref": "ServerlessDeploymentBucket"
       }
     },
-    "ListsLambdaFunctionQualifiedArn": {
-      "Description": "Current Lambda function version",
-      "Value": {
-        "Ref": "ListsLambdaVersionICTl0fsEFW5Z0EcEDPfOmVNYHIBiEajAFNUtc1nNs"
-      }
-    },
     "ProfileLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "ProfileLambdaVersionCVLHqNTMBT0OCAU1JYZbqW7kFyV5VfYEBWvYax0c0"
+        "Ref": "ProfileLambdaVersionUmVqR7skll4k4zEopMJcU3AaEwljuu2JLu4gzLhEP8"
       }
     },
     "SaveLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "SaveLambdaVersionSuF2dyXewK3tH6sJo4ghlb5Sm0yt2rTLHd47OnThw"
+        "Ref": "SaveLambdaVersionBPrzTtE0H0BNxRlFYFneCEJwdbY3aXzh3DEkflHUbg"
       }
     },
     "SignupLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "SignupLambdaVersionYfHA69Ze3kVEf7XyrnnWpMmdnNPNtH2DigbL8eAeaE"
+        "Ref": "SignupLambdaVersionzFjnHzb8nHP0z5Oiu5aWGOqz0JaX3jkO0qt5pslbq1A"
       }
     },
     "LoginLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "LoginLambdaVersionAywVHN5lEgUPPyUzqysdbxAtpgGn3IadXMKXD6STyw"
+        "Ref": "LoginLambdaVersionBLGF02842DVjHjqpCEDNHdUxG9KQU9L80UnVxu9o"
+      }
+    },
+    "SharedListsLambdaFunctionQualifiedArn": {
+      "Description": "Current Lambda function version",
+      "Value": {
+        "Ref": "SharedListsLambdaVersions4jFM10zZ1fNVWVmLJZzeljACcUQJ4mapPzDpU6y0"
+      }
+    },
+    "ListsLambdaFunctionQualifiedArn": {
+      "Description": "Current Lambda function version",
+      "Value": {
+        "Ref": "ListsLambdaVersion6eeIuRhEqjACb2SD7s7peRnmueFNkp4QFjq5up9xMA"
       }
     },
     "ServiceEndpoint": {

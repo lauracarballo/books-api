@@ -198,7 +198,18 @@ module.exports.profile = async (event) => {
   const token = authHeader.slice(7);
   console.log({ token });
 
-  const decoded = jwt.verify(token, JWT_SECRET);
+  let decoded;
+  try {
+    decoded = jwt.verify(token, JWT_SECRET);
+  } catch (error) {
+    return {
+      statusCode: 401,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+      },
+      body: JSON.stringify({ success: false, err: "not authorized" }),
+    };
+  }
 
   const data = await dynamoDb
     .get({
@@ -209,11 +220,11 @@ module.exports.profile = async (event) => {
 
   if (!data.Item) {
     return {
-      statusCode: 401,
+      statusCode: 404,
       headers: {
         "Access-Control-Allow-Origin": "*",
       },
-      body: JSON.stringify({ success: false, err: "not authorized" }),
+      body: JSON.stringify({ success: false, err: "profile not found" }),
     };
   } else {
     return {
@@ -227,15 +238,16 @@ module.exports.profile = async (event) => {
 };
 
 module.exports.sharedLists = async (event) => {
-  const authHeader = event.headers.Authorization;
-  const token = authHeader.slice(7);
-  console.log({ token });
+  const queryStringParameters = event.queryStringParameters;
+  console.log(queryStringParameters);
+  const { shareId } = queryStringParameters;
 
-  const decoded = jwt.verify(token, JWT_SECRET);
+  // const shareId = event.path.slice(13);
+
   const data = await dynamoDb
     .get({
       TableName: "bookshelf",
-      Key: { userId: decoded.userId, sortKey: "books" },
+      Key: { userId: shareId, sortKey: "books" },
     })
     .promise();
 
@@ -245,7 +257,7 @@ module.exports.sharedLists = async (event) => {
       headers: {
         "Access-Control-Allow-Origin": "*",
       },
-      body: JSON.stringify({ success: false, err: "not authorized" }),
+      body: JSON.stringify({ success: false, err: "user not found" }),
     };
   } else {
     return {

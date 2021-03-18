@@ -8,7 +8,7 @@ const API_URL = IS_LOCAL
   ? "http://localhost:5000"
   : "https://mawxfs6gx5.execute-api.us-east-1.amazonaws.com";
 
-export default function BookLists() {
+export default function SharedProfile() {
   const { shareId } = useParams();
 
   const [lists, setLists] = useState({
@@ -17,9 +17,9 @@ export default function BookLists() {
   });
 
   const fetchLists = async () => {
-    const storedLists = await fetch(`${API_URL}/dev/sharedLists`).then((res) =>
-      res.json()
-    );
+    const storedLists = await fetch(
+      `${API_URL}/dev/sharedLists?shareId=${shareId}`
+    ).then((res) => res.json());
 
     console.log(storedLists);
 
@@ -35,7 +35,7 @@ export default function BookLists() {
 
   return (
     <PageWrapper>
-      {/* <h1>{username}'s BOOKSHELF</h1> */}
+      <h1>WELCOME TO MY BOOKSHELF</h1>
 
       <Books setLists={setLists} lists={lists} />
     </PageWrapper>
@@ -44,5 +44,5 @@ export default function BookLists() {
 
 export const PageWrapper = styled.section`
   width: 90%;
-  margin: 10px auto;
+  margin: 50px auto;
 `;

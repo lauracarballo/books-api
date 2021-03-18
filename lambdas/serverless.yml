@@ -55,6 +55,13 @@ functions:
           path: login
           method: post
           cors: true
+  sharedLists:
+    handler: handler.sharedLists
+    events:
+      - http:
+          path: sharedLists
+          method: get
+          cors: true
 
 resources:
   Resources:
