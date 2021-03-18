@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import Books from "../components/Books";
 
-const IS_LOCAL = true;
+const IS_LOCAL = process.env.NODE_ENV !== "production";
 const API_URL = IS_LOCAL
   ? "http://localhost:5000"
   : "https://mawxfs6gx5.execute-api.us-east-1.amazonaws.com";
