@@ -14,7 +14,7 @@ To enable a full user experience I added a login and sign up page and then built
 
 - React v16.13.1
 - DynamoDB
-- AWS serverless
+- AWS Lambda
 
 ## Setup
 
