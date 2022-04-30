@@ -4,7 +4,7 @@ import Header from "../components/Header";
 import Books from "../components/Books";
 import { useAuth } from "../context/auth";
 
-const IS_LOCAL = true;
+const IS_LOCAL = false;
 const API_URL = IS_LOCAL
   ? "http://localhost:5000"
   : "https://mawxfs6gx5.execute-api.us-east-1.amazonaws.com";

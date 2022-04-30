@@ -8,7 +8,7 @@ import Signup from "./pages/Signup";
 import SharedProfile from "./pages/UserProfile";
 import PrivateRoute from "./PrivateRoute";
 
-const IS_LOCAL = true;
+const IS_LOCAL = false;
 const API_URL = IS_LOCAL
   ? "http://localhost:5000"
   : "https://mawxfs6gx5.execute-api.us-east-1.amazonaws.com";
